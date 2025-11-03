@@ -6,12 +6,17 @@ import { useCallback, useRef, useState } from "react";
 type ChunkHandler = (delta: string) => void;
 
 function parseSSELines(line: string): string | null {
+
   // Expected format:  lines beginning with `data: {...}`
   if (!line.startsWith("data:")) return null;
+
   const json = line.slice(5).trim();
+
   if (json === "[DONE]") return null;
+
   try {
     const parsed = JSON.parse(json);
+
     // OpenAI-style streamed delta: choices[0].delta.content
     const content =
       parsed?.choices?.[0]?.delta?.content ??
@@ -54,14 +59,20 @@ async function fetchStreamed(
   let buffer = "";
 
   try {
+
     while (true) {
+
       const { done, value } = await reader.read();
+
       if (done) break;
+
       buffer += decoder.decode(value, { stream: true });
 
       // Split by lines and parse SSE `data: ...`
       const lines = buffer.split(/\r?\n/);
+
       buffer = lines.pop() ?? "";
+
       for (const ln of lines) {
         const delta = parseSSELines(ln);
         if (delta) onChunk(delta);
@@ -89,9 +100,11 @@ export default function LlmTestPage() {
   const abortRef = useRef<AbortController | null>(null);
 
   const send = useCallback(async () => {
+
     setAnswer("");
     setErrorMsg(null);
     setStatus("loading");
+
     abortRef.current?.abort();
     abortRef.current = new AbortController();
 
@@ -110,25 +123,32 @@ export default function LlmTestPage() {
     const baseDelay = 800; // ms
 
     for (let i = 0; i <= MAX_RETRIES; i++) {
+
       setAttempt(i + 1);
+
       try {
         await fetchStreamed(
-          "/api/llm",
+          `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}/api/llm`,
           payload,
           (delta) => setAnswer((prev) => prev + delta),
           { timeoutMs: 45_000, signal: abortRef.current.signal }
         );
         setStatus("done");
+
         return;
+
       } catch (err: any) {
         // If last attempt, surface error
         if (i === MAX_RETRIES) {
           setStatus("error");
           setErrorMsg(err?.message || "Request failed");
+
           return;
+
         }
         // Backoff and retry
         const wait = baseDelay * Math.pow(2, i) + Math.random() * 300;
+        
         await new Promise((r) => setTimeout(r, wait));
       }
     }
