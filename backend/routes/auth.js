@@ -129,7 +129,7 @@ router.post('/login', loginValidation, async (req, res) => {
         });
 
         res.json({
-
+            token: token,
             message: 'Login successful',
             user: {
                 id: user.id,
