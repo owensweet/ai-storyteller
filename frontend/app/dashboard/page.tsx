@@ -24,11 +24,9 @@ export default function DashboardPage() {
 
     const fetchUserProfile = async () => {
         try {
-            const token = localStorage.getItem("token")
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://ai-storyteller-production.up.railway.app'}/api/users/profile`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }         
+                method: 'GET',
+                credentials: 'include',      
             });
 
             if (response.ok) {

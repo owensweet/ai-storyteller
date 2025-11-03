@@ -27,8 +27,6 @@ export default function LoginPage() {
             });
 
             const data = await response.json();
-            const token = data.token;
-            localStorage.setItem("token", token);
 
             if (response.ok) {
                 // Redirect based on user role
