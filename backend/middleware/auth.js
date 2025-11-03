@@ -28,6 +28,8 @@ const auth = async (req, res, next) => {
             console.log('[DEBUG] Token from cookie:', token ? 'Found' : 'Not found');
         }
 
+        console.log('Token received:', token);
+
         if (!token) {
             console.log('[DEBUG] No token found in either header or cookie');
             return res.status(401).json({ error: 'No token, authorization denied' });

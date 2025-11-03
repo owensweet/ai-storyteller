@@ -29,9 +29,9 @@ export default function LoginPage() {
             const data = await response.json();
 
             if (response.ok) {
-                // Save token to localStorage for all users
-                localStorage.setItem("token", data.token);
-
+                if (data.token) {
+                    localStorage.setItem("token", data.token)
+                }
                 // Redirect based on user role
                 if (data.user.isAdmin) {
                     router.push('/admin');
