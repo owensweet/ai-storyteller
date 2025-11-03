@@ -110,7 +110,7 @@ router.post('/login', loginValidation, async (req, res) => {
         }
 
         // Verify password
-        const isValidPassword = await User.verifyPassword(password, user.password);
+        const isValidPassword = await user.verifyPassword(password, user.password);
 
         if (!isValidPassword) {
             return res.status(400).json({ error: 'Invalid credentials' });
