@@ -60,6 +60,17 @@ app.get('/health', (req, res) => {
     res.json({ status: 'OK', timestamp: new Date().toISOString() });
 });
 
+// Debug endpoint to check cookies
+app.get('/debug/cookies', (req, res) => {
+    res.json({
+        cookies: req.cookies,
+        headers: {
+            cookie: req.headers.cookie,
+            authorization: req.headers.authorization
+        }
+    });
+});
+
 // Error handling middleware
 app.use((err, req, res, next) => {
 
