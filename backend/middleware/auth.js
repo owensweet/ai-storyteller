@@ -12,6 +12,8 @@ const auth = async (req, res, next) => {
             token = req.cookies.token;
         }
 
+        console.log('Token received:', token);
+
         if (!token) {
             return res.status(401).json({ error: 'No token, authorization denied' });
         }
