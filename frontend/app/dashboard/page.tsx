@@ -35,6 +35,7 @@ export default function DashboardPage() {
                 const data = await response.json();
                 setUser(data.user);
             } else {
+                console.log("user profile could not be fetched, rerouting")
                 router.push('/auth/login');
             }
         } catch (err) {
@@ -46,7 +47,7 @@ export default function DashboardPage() {
 
     const handleLogout = async () => {
         try {
-            await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}/api/auth/logout`, {
+            await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://ai-storyteller-production.up.railway.app'}/api/auth/logout`, {
                 method: 'POST',
                 credentials: 'include',
             });

@@ -16,7 +16,7 @@ router.get('/profile', auth, async (req, res) => {
                 email: user.email,
                 apiCalls: user.apiCalls,
                 remainingCalls: Math.max(0, 20 - user.apiCalls),
-                isAdmin: user.is_admin
+                isAdmin: user.isAdmin
             }
         });
     } catch (error) {
