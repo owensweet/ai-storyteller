@@ -19,6 +19,9 @@ const PORT = process.env.PORT || 3001;
 // Security middleware
 app.use(helmet());
 
+// Trust proxy for railway X-Forwarded-For header
+app.set('trust proxy', 1)
+
 // Rate limiting
 const limiter = rateLimit({
 
