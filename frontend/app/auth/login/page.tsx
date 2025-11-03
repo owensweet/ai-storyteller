@@ -29,9 +29,11 @@ export default function LoginPage() {
             const data = await response.json();
 
             if (response.ok) {
+                if (data.token) {
+                    localStorage.setItem("token", data.token)
+                }
                 // Redirect based on user role
                 if (data.user.isAdmin) {
-                    localStorage.setItem("token", data.token)
                     router.push('/admin');
                 } else {
                     router.push('/dashboard');
