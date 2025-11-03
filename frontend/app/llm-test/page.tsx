@@ -128,7 +128,7 @@ export default function LlmTestPage() {
 
       try {
         await fetchStreamed(
-          `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}/api/llm`,
+          `${process.env.NEXT_PUBLIC_API_URL || 'https://ai-storyteller-production.up.railway.app'}/api/llm`,
           payload,
           (delta) => setAnswer((prev) => prev + delta),
           { timeoutMs: 45_000, signal: abortRef.current.signal }

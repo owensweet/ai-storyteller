@@ -34,12 +34,12 @@ export default function AdminPage() {
     const fetchAdminData = async () => {
         try {
             // Fetch users
-            const usersResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}/api/admin/users`, {
+            const usersResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://ai-storyteller-production.up.railway.app'}/api/admin/users`, {
                 credentials: 'include',
             });
 
             // Fetch stats
-            const statsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}/api/admin/stats`, {
+            const statsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://ai-storyteller-production.up.railway.app'}/api/admin/stats`, {
                 credentials: 'include',
             });
 
