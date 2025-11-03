@@ -34,7 +34,11 @@ app.use(limiter);
 // CORS configuration
 app.use(cors({
 
-    origin: process.env.FRONTEND_URL || 'https://ai-storyteller-two.vercel.app',
+    origin: [
+        'http://localhost:3000',                    // Local development
+        'https://ai-storyteller-two.vercel.app',   // Production frontend
+        process.env.FRONTEND_URL                   // Environment variable
+    ].filter(Boolean),
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
@@ -80,7 +84,7 @@ app.listen(PORT, async () => {
 
         // Connect to MongoDB
         console.log('Connecting to MongoDB...');
-        
+
         await connectDB();
 
         // Create default users
