@@ -25,7 +25,7 @@ export default function DashboardPage() {
     const fetchUserProfile = async () => {
         try {
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://ai-storyteller-production.up.railway.app'}/api/users/profile`, {
-                method: 'GET',
+                // method: 'GET',
                 credentials: 'include',      
             });
 
