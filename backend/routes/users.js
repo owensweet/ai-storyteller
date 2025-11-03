@@ -7,8 +7,13 @@ const router = express.Router();
 router.get('/profile', auth, async (req, res) => {
 
     try {
-        
+        // Debug code: Log profile request
+        console.log('[DEBUG] Profile endpoint reached');
+        console.log('[DEBUG] User from auth middleware:', req.user ? req.user.email : 'No user');
+
         const user = req.user;
+
+        console.log('[DEBUG] Sending profile response for user:', user.email);
 
         res.json({
             user: {
@@ -20,6 +25,14 @@ router.get('/profile', auth, async (req, res) => {
             }
         });
     } catch (error) {
+        // Debug code: Log profile errors
+        console.error('[DEBUG] Profile endpoint error:', error);
+        console.log('[DEBUG] Error details:', {
+            name: error.name,
+            message: error.message,
+            user: req.user ? req.user.email : 'No user'
+        });
+
         console.error('Get profile error:', error);
         res.status(500).json({ error: 'Failed to get user profile' });
     }

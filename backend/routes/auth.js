@@ -119,6 +119,17 @@ router.post('/login', loginValidation, async (req, res) => {
         // Generate token
         const token = generateToken(user.id);
 
+        // Debug code: Log token generation
+        console.log('[DEBUG] Login successful for user:', user.email);
+        console.log('[DEBUG] Generated token length:', token.length);
+        console.log('[DEBUG] JWT_SECRET available:', process.env.JWT_SECRET ? 'Yes' : 'No');
+        console.log('[DEBUG] Setting cookie with options:', {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none',
+            maxAge: 24 * 60 * 60 * 1000
+        });
+
         // Set httpOnly cookie
         res.cookie('token', token, {
 
@@ -127,6 +138,8 @@ router.post('/login', loginValidation, async (req, res) => {
             sameSite: 'none',
             maxAge: 24 * 60 * 60 * 1000, // 24 hours
         });
+
+        console.log('[DEBUG] Cookie set, sending response with token');
 
         res.json({
             token: token,

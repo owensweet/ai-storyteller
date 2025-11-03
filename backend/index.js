@@ -62,12 +62,29 @@ app.get('/health', (req, res) => {
 
 // Debug endpoint to check cookies
 app.get('/debug/cookies', (req, res) => {
+    // Debug code: Comprehensive request analysis
+    console.log('[DEBUG] Debug endpoint called');
+    console.log('[DEBUG] Full request analysis:', {
+        method: req.method,
+        url: req.url,
+        origin: req.headers.origin,
+        userAgent: req.headers['user-agent']
+    });
+
     res.json({
         cookies: req.cookies,
         headers: {
             cookie: req.headers.cookie,
-            authorization: req.headers.authorization
-        }
+            authorization: req.headers.authorization,
+            origin: req.headers.origin,
+            referer: req.headers.referer
+        },
+        environment: {
+            nodeEnv: process.env.NODE_ENV,
+            frontendUrl: process.env.FRONTEND_URL,
+            jwtSecret: process.env.JWT_SECRET ? 'Set' : 'Not set'
+        },
+        timestamp: new Date().toISOString()
     });
 });
 
