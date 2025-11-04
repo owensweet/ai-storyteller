@@ -87,6 +87,8 @@ export default function DashboardPage() {
 
     const isOverLimit = user.apiCalls >= 20;
 
+    console.log("[DEBUG] User isAdmin: ", user.isAdmin)
+
     return (
         <div className="min-h-screen bg-gray-50">
             <nav className="bg-white shadow">
