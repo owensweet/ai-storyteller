@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema({
         required: true
     },
 
-    is_admin: {
+    isAdmin: {
         type: Boolean,
         default: false
     },
@@ -76,7 +76,7 @@ userSchema.statics.resetApiCalls = async function (userId) {
 
 // Static method to get all users
 userSchema.statics.getAllUsers = async function () {
-    return await this.find({}, 'email is_admin api_calls createdAt').sort({ createdAt: -1 });
+    return await this.find({}, 'email isAdmin api_calls createdAt').sort({ createdAt: -1 });
 };
 
 // Static method to create default users
@@ -95,7 +95,7 @@ userSchema.statics.createDefaultUsers = async function () {
             await this.create({
                 email: adminEmail,
                 password: hashedAdminPassword,
-                is_admin: true
+                isAdmin: true
             });
             console.log('Admin user created successfully');
         }
@@ -112,7 +112,7 @@ userSchema.statics.createDefaultUsers = async function () {
 
                 email: testEmail,
                 password: hashedTestPassword,
-                is_admin: false
+                isAdmin: false
             });
             console.log('Test user created successfully');
         }
