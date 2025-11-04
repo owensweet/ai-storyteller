@@ -88,6 +88,75 @@ app.get('/debug/cookies', (req, res) => {
     });
 });
 
+// Test authentication endpoint with debug output
+app.get('/debug/auth-test', async (req, res) => {
+    const jwt = require('jsonwebtoken');
+
+    let debugInfo = {
+        timestamp: new Date().toISOString(),
+        cookies: req.cookies,
+        headers: {
+            authorization: req.headers.authorization,
+            cookie: req.headers.cookie,
+            origin: req.headers.origin,
+            referer: req.headers.referer
+        },
+        authFlow: []
+    };
+
+    try {
+        // Simulate auth middleware logic
+        debugInfo.authFlow.push('1. Starting auth check...');
+
+        let token = req.cookies.token;
+        debugInfo.authFlow.push(`2. Cookie token: ${token ? 'Found' : 'Not found'}`);
+
+        if (!token && req.headers.authorization) {
+            if (req.headers.authorization.startsWith('Bearer ')) {
+                token = req.headers.authorization.slice(7);
+                debugInfo.authFlow.push('3. Using Bearer token from Authorization header');
+            }
+        }
+
+        if (!token) {
+            debugInfo.authFlow.push('4. No token found - would return 401');
+            debugInfo.result = 'FAIL - No token';
+            return res.json(debugInfo);
+        }
+
+        debugInfo.authFlow.push(`4. Token found: ${token.substring(0, 20)}...`);
+
+        // Verify token
+        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
+        debugInfo.authFlow.push(`5. Token decoded - User ID: ${decoded.id}`);
+
+        // Find user
+        const User = require('./models/User');
+        const user = await User.findById(decoded.id).select('-password');
+
+        if (!user) {
+            debugInfo.authFlow.push('6. User not found in database');
+            debugInfo.result = 'FAIL - User not found';
+            return res.json(debugInfo);
+        }
+
+        debugInfo.authFlow.push(`6. User found: ${user.email}`);
+        debugInfo.result = 'SUCCESS';
+        debugInfo.user = {
+            id: user._id,
+            email: user.email
+        };
+
+        res.json(debugInfo);
+
+    } catch (error) {
+        debugInfo.authFlow.push(`ERROR: ${error.message}`);
+        debugInfo.result = 'FAIL - Token error';
+        debugInfo.error = error.message;
+        res.json(debugInfo);
+    }
+});
+
 // Error handling middleware
 app.use((err, req, res, next) => {
 

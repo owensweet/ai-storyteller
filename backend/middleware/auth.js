@@ -17,6 +17,12 @@ const auth = async (req, res, next) => {
         let token = req.header('Authorization')?.replace('Bearer ', '');
         console.log('[DEBUG] Token from Authorization header:', token ? 'Found' : 'Not found');
 
+        // Check if token is 'undefined' string (common issue)
+        if (token === 'undefined' || token === 'null' || !token) {
+            token = null;
+            console.log('[DEBUG] Authorization header token was invalid, trying cookie...');
+        }
+
         if (!token) {
             token = req.cookies.token;
             console.log('[DEBUG] Token from cookie:', token ? 'Found' : 'Not found');

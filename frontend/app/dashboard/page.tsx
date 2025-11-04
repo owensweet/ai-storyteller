@@ -25,12 +25,15 @@ export default function DashboardPage() {
     const fetchUserProfile = async () => {
         try {
             const token = localStorage.getItem('token');
-        
+            console.log('[FRONTEND DEBUG] Token from localStorage:', token ? 'Found' : 'Not found');
+
             if (!token) {
+                console.log('[FRONTEND DEBUG] No token found, redirecting to login');
                 router.push('/auth/login');
                 return;
             }
 
+            console.log('[FRONTEND DEBUG] Making profile request with token');
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://ai-storyteller-production.up.railway.app'}/api/users/profile`, {
                 credentials: 'include',
                 headers: {
@@ -38,8 +41,10 @@ export default function DashboardPage() {
                 },
             });
 
+            console.log('[FRONTEND DEBUG] Profile response status:', response.status);
             if (response.ok) {
                 const data = await response.json();
+                console.log('[FRONTEND DEBUG] Profile data received:', data);
                 setUser(data.user);
             } else {
                 console.log("user profile could not be fetched, rerouting")
