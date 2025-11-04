@@ -44,6 +44,8 @@ router.post('/',
     llmLimiter,
     validateLLMRequest,
     handleValidationErrors,
+    auth,
+    apiUsage,
     async (req, res) => {
         const LLM_BASE = process.env.LLM_BASE_URL;
 
