@@ -19,9 +19,9 @@ router.get('/profile', auth, async (req, res) => {
             user: {
                 id: user.id,
                 email: user.email,
-                apiCalls: user.apiCalls,
-                remainingCalls: Math.max(0, 20 - user.apiCalls),
-                isAdmin: user.isAdmin
+                apiCalls: user.api_calls,
+                remainingCalls: Math.max(0, 20 - user.api_calls),
+                isAdmin: user.is_admin
             }
         });
     } catch (error) {
