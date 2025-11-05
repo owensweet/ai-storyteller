@@ -194,8 +194,8 @@ router.get('/me', async (req, res) => {
             user: {
                 id: user.id,
                 email: user.email,
-                isAdmin: user.isAdmin,
-                apiCalls: user.apiCalls
+                isAdmin: user.is_admin,
+                apiCalls: user.api_calls
             }
         });
     } catch (error) {

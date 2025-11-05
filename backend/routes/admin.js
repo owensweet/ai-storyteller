@@ -17,9 +17,9 @@ router.get('/users', adminAuth, async (req, res) => {
 
                 id: user.id,
                 email: user.email,
-                isAdmin: user.isAdmin,
-                apiCalls: user.apiCalls,
-                createdAt: user.createdAt
+                isAdmin: user.is_admin,
+                apiCalls: user.api_calls,
+                createdAt: user.created_at
             }))
         });
 
