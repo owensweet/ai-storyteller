@@ -60,10 +60,10 @@ router.get('/stats', adminAuth, async (req, res) => {
         const stats = {
 
             totalUsers: users.length,
-            adminUsers: users.filter(u => u.isAdmin).length,
-            totalApiCalls: users.reduce((sum, u) => sum + u.apiCalls, 0),
-            usersOverLimit: users.filter(u => u.apiCalls > 20).length,
-            averageApiCalls: users.length > 0 ? (users.reduce((sum, u) => sum + u.apiCalls, 0) / users.length).toFixed(2) : 0
+            adminUsers: users.filter(u => u.is_admin).length,
+            totalApiCalls: users.reduce((sum, u) => sum + u.api_calls, 0),
+            usersOverLimit: users.filter(u => u.api_calls > 20).length,
+            averageApiCalls: users.length > 0 ? (users.reduce((sum, u) => sum + u.api_calls, 0) / users.length).toFixed(2) : 0
         };
 
         res.json({ stats });
