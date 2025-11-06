@@ -12,14 +12,14 @@ const apiUsage = async (req, res, next) => {
         }
 
         // Check if user has exceeded free API calls (20 calls)
-        if (user.apiCalls >= 20) {
+        if (user.api_calls >= 20) {
 
             // Still allow the request but include warning in response
             req.apiLimitExceeded = true;
         }
 
         // Increment API call count
-        await User.incrementApiCalls(user.id);
+        await user.incrementApiCalls();
 
         next();
 
