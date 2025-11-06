@@ -44,7 +44,7 @@ router.post('/',
     llmLimiter,
     validateLLMRequest,
     handleValidationErrors,
-    // auth,
+    auth,
     apiUsage,
     async (req, res) => {
         const LLM_BASE = process.env.LLM_BASE_URL;
@@ -109,7 +109,7 @@ router.post('/',
         const reader = upstream.body.getReader();
 
         const pump = async () => {
-            
+
             try {
 
                 while (true) {
@@ -133,7 +133,7 @@ router.post('/',
 
         // Handle client disconnect
         req.on('close', () => {
-            
+
             if (!res.headersSent) {
                 res.end();
             }
