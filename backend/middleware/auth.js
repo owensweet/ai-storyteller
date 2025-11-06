@@ -77,7 +77,7 @@ const adminAuth = async (req, res, next) => {
 
         await auth(req, res, () => {
 
-            if (!req.user.isAdmin) {
+            if (!req.user.is_admin) {
 
                 return res.status(403).json({ error: 'Access denied. Admin only.' });
             }
