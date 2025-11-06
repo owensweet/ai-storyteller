@@ -65,7 +65,7 @@ export default function AdminPage() {
 
     const resetUserApiCalls = async (userId: number) => {
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}/api/admin/users/${userId}/reset-api-calls`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://ai-storyteller-production.up.railway.app'}/api/admin/users/${userId}/reset-api-calls`, {
                 method: 'POST',
                 credentials: 'include',
             });
@@ -83,7 +83,7 @@ export default function AdminPage() {
 
     const handleLogout = async () => {
         try {
-            await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`, {
+            await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://ai-storyteller-production.up.railway.app'}/api/auth/logout`, {
                 method: 'POST',
                 credentials: 'include',
             });
