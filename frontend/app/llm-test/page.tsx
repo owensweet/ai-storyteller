@@ -1,7 +1,7 @@
 // app/llm-test/page.tsx
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useRef, useState, useEffect } from "react";
 
 type ChunkHandler = (delta: string) => void;
 
@@ -40,9 +40,23 @@ async function fetchStreamed(
   // Allow external signal to cancel too
   opts?.signal?.addEventListener("abort", () => controller.abort(), { once: true });
 
+  // Get auth token from localStorage
+  const token = localStorage.getItem('token');
+
+  // Prepare headers w/ authentication
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json"
+  };
+
+  // Add Authorization header if token exists
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+
   const res = await fetch(url, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers,
+    credentials: 'include', // Including cookies for cross-origin requests
     body: JSON.stringify(body),
     signal: controller.signal,
   });
@@ -96,8 +110,15 @@ export default function LlmTestPage() {
   const [status, setStatus] = useState<"idle" | "loading" | "error" | "done">("idle");
   const [attempt, setAttempt] = useState(0);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const abortRef = useRef<AbortController | null>(null);
+
+  // Check authentication status on component mount
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    setIsAuthenticated(!!token);
+  }, []);
 
   const send = useCallback(async () => {
 
@@ -107,6 +128,20 @@ export default function LlmTestPage() {
 
     abortRef.current?.abort();
     abortRef.current = new AbortController();
+
+    // Check authentication before making request
+    const token = localStorage.getItem('token');
+    console.log('[FRONTEND DEBUG] LLM request - token available:', token ? 'Yes' : 'No');
+
+    // Update authentication status
+    setIsAuthenticated(!!token);
+
+    if (!token) {
+      console.log('[FRONTEND DEBUG] No token found, user may need to log in');
+      setErrorMsg('Please log in to use the LLM');
+      setStatus("error");
+      return;
+    }
 
     const payload = {
       model: "mistral",
@@ -148,7 +183,7 @@ export default function LlmTestPage() {
         }
         // Backoff and retry
         const wait = baseDelay * Math.pow(2, i) + Math.random() * 300;
-        
+
         await new Promise((r) => setTimeout(r, wait));
       }
     }
@@ -162,6 +197,20 @@ export default function LlmTestPage() {
   return (
     <div className="mx-auto max-w-3xl p-6 space-y-4">
       <h1 className="text-2xl font-bold">LLM Streaming Test</h1>
+
+      {/* Authentication Status */}
+      <div className="bg-blue-50 border border-blue-200 rounded p-3">
+        <div className="text-sm">
+          <strong>Authentication Status:</strong> {isAuthenticated ? '✅ Logged In' : '❌ Not Logged In'}
+          {!isAuthenticated && (
+            <div className="mt-2 text-blue-700">
+              <a href="/auth/login" className="underline hover:text-blue-900">
+                → Please log in first to use the LLM
+              </a>
+            </div>
+          )}
+        </div>
+      </div>
 
       <div className="space-y-2">
         <label className="block text-sm font-medium">Prompt</label>
