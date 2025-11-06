@@ -198,19 +198,19 @@ export default function LlmTestPage() {
     <div className="mx-auto max-w-3xl p-6 space-y-4">
       <h1 className="text-2xl font-bold">LLM Streaming Test</h1>
 
-      {/* Authentication Status */}
-      <div className="bg-blue-50 border border-blue-200 rounded p-3">
-        <div className="text-sm">
-          <strong>Authentication Status:</strong> {isAuthenticated ? '✅ Logged In' : '❌ Not Logged In'}
-          {!isAuthenticated && (
-            <div className="mt-2 text-blue-700">
-              <a href="/auth/login" className="underline hover:text-blue-900">
+      {/* Authentication Status - Only show when not logged in */}
+      {!isAuthenticated && (
+        <div className="bg-yellow-100 border border-yellow-300 rounded p-3">
+          <div className="text-sm text-yellow-800">
+            <strong>Authentication is Required</strong>
+            <div className="mt-2">
+              <a href="/auth/login" className="underline hover:text-yellow-900 font-medium">
                 → Please log in first to use the LLM
               </a>
             </div>
-          )}
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="space-y-2">
         <label className="block text-sm font-medium">Prompt</label>
