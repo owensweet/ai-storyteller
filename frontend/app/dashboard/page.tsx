@@ -70,7 +70,9 @@ export default function DashboardPage() {
 
     // Get 3 random action buttons
     const getRandomActions = useCallback(() => {
+
         const shuffled = [...ACTION_BUTTONS].sort(() => 0.5 - Math.random());
+
         return shuffled.slice(0, 3);
     }, []);
 
@@ -89,8 +91,11 @@ export default function DashboardPage() {
             console.log('[FRONTEND DEBUG] Token from localStorage:', token ? 'Found' : 'Not found');
 
             if (!token) {
+
                 console.log('[FRONTEND DEBUG] No token found, redirecting to login');
+
                 router.push('/auth/login');
+
                 return;
             }
 
@@ -103,12 +108,18 @@ export default function DashboardPage() {
             });
 
             console.log('[FRONTEND DEBUG] Profile response status:', response.status);
+
             if (response.ok) {
+
                 const data = await response.json();
+
                 console.log('[FRONTEND DEBUG] Profile data received:', data);
+
                 setUser(data.user);
+
             } else {
                 console.log("user profile could not be fetched, rerouting")
+
                 router.push('/auth/login');
             }
         } catch (err) {
@@ -124,7 +135,9 @@ export default function DashboardPage() {
                 method: 'POST',
                 credentials: 'include',
             });
+
             router.push('/auth/login');
+
         } catch (err) {
             console.error('Logout error:', err);
         }
@@ -135,15 +148,22 @@ export default function DashboardPage() {
         if (hasSubmitted) return; // Prevent changes after submission
 
         setSelectedGenres(prev => {
+
             if (prev.includes(genreId)) {
+
                 // Deselect if already selected
                 return prev.filter(id => id !== genreId);
+
             } else if (prev.length < 3) {
+                
                 // Add if under limit
                 return [...prev, genreId];
+
             } else {
+                
                 // At limit, don't add
                 return prev;
+
             }
         });
     };
@@ -151,12 +171,14 @@ export default function DashboardPage() {
     // Location selection handler
     const selectLocation = (locationId: string) => {
         if (hasSubmitted) return; // Prevent changes after submission
+
         setSelectedLocation(locationId);
     };
 
     // Build prompt from selections
     const buildPrompt = (isInitial: boolean, actionPrompt?: string) => {
         const genrePrompts = selectedGenres
+
             .map(id => GENRES.find(g => g.id === id)?.prompt)
             .filter(Boolean)
             .join(', ');
@@ -174,7 +196,9 @@ export default function DashboardPage() {
     // Parse SSE stream
     const parseSSELine = (line: string): string | null => {
         if (!line.startsWith('data:')) return null;
+
         const json = line.slice(5).trim();
+        
         if (json === '[DONE]') return null;
 
         try {
@@ -187,6 +211,7 @@ export default function DashboardPage() {
 
     // Generate story segment
     const generateStory = async (actionPrompt?: string) => {
+
         setIsGenerating(true);
         setGenerationError('');
 
@@ -238,15 +263,21 @@ export default function DashboardPage() {
             let buffer = '';
 
             while (true) {
+                
                 const { done, value } = await reader.read();
+
                 if (done) break;
 
                 buffer += decoder.decode(value, { stream: true });
+
                 const lines = buffer.split('\n');
+                
                 buffer = lines.pop() || '';
 
                 for (const line of lines) {
+
                     const content = parseSSELine(line);
+                    
                     if (content) {
                         accumulatedText += content;
                     }
@@ -255,7 +286,9 @@ export default function DashboardPage() {
 
             // Process remaining buffer
             if (buffer) {
+                
                 const content = parseSSELine(buffer);
+
                 if (content) accumulatedText += content;
             }
 
@@ -340,14 +373,18 @@ export default function DashboardPage() {
             <nav className="bg-white shadow">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
+
                         <div className="flex items-center">
                             <h1 className="text-2xl font-bold text-gray-900">AI Story Generator</h1>
                         </div>
+                        
                         <div className="flex items-center space-x-4">
+
                             <div className="text-sm text-gray-600">
                                 <span className="font-medium">{user.email}</span>
                                 <span className="ml-2">• API Calls: {user.apiCalls}/20</span>
                             </div>
+
                             {user.isAdmin && (
                                 <Link
                                     href="/admin"
@@ -356,12 +393,14 @@ export default function DashboardPage() {
                                     Admin
                                 </Link>
                             )}
+
                             <button
                                 onClick={handleLogout}
                                 className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700 transition"
                             >
                                 Logout
                             </button>
+
                         </div>
                     </div>
                 </div>
@@ -453,7 +492,7 @@ export default function DashboardPage() {
                 {hasSubmitted && storySegments.length === 0 && isGenerating && (
                     <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
                         <p className="text-sm text-yellow-800 text-center">
-                            ✨ Generating your story... Please wait.
+                            Generating your story... Please wait.
                         </p>
                     </div>
                 )}
@@ -462,7 +501,7 @@ export default function DashboardPage() {
                 {hasSubmitted && (
                     <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
                         <p className="text-sm text-amber-800 text-center">
-                            📝 To edit your genre or location selections, please click "New Story" to start over.
+                            To edit your genre or location selections, please click "New Story" to start over.
                         </p>
                     </div>
                 )}
@@ -481,6 +520,7 @@ export default function DashboardPage() {
                     <div className="space-y-4 mb-6">
                         <h2 className="text-xl font-bold text-gray-900">Your Story</h2>
                         {storySegments.map((segment, index) => (
+                            
                             <div
                                 key={segment.id}
                                 className="bg-white rounded-lg shadow p-6 border-l-4 border-blue-500"
@@ -493,9 +533,11 @@ export default function DashboardPage() {
                                         {segment.timestamp.toLocaleTimeString()}
                                     </span>
                                 </div>
+
                                 <p className="text-gray-800 leading-relaxed whitespace-pre-wrap">
                                     {segment.text}
                                 </p>
+
                             </div>
                         ))}
                     </div>
@@ -522,18 +564,21 @@ export default function DashboardPage() {
 
                         {/* Save and New Story Buttons */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4 pt-4 border-t">
+                            
                             <button
                                 onClick={handleSaveStory}
                                 className="px-6 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors duration-200"
                             >
-                                💾 Save Story
+                                Save Story
                             </button>
+
                             <button
                                 onClick={handleNewStory}
                                 className="px-6 py-3 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors duration-200"
                             >
-                                📝 New Story
+                                New Story
                             </button>
+
                         </div>
                     </div>
                 )}
@@ -542,7 +587,7 @@ export default function DashboardPage() {
                 {isGenerating && storySegments.length > 0 && (
                     <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4">
                         <p className="text-sm text-blue-800 text-center animate-pulse">
-                            ✨ Generating next part of your story...
+                            Generating next part of your story...
                         </p>
                     </div>
                 )}
