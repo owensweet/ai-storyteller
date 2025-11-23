@@ -516,9 +516,15 @@ export default function DashboardPage() {
                 {/* Error Display */}
                 {generationError && (
                     <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-                        <p className="text-sm text-red-800">
+                        <p className="text-sm text-red-800 mb-3">
                             <strong>Error:</strong> {generationError}
                         </p>
+                        <button
+                            onClick={handleNewStory}
+                            className="px-6 py-2 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors duration-200"
+                        >
+                            New Story
+                        </button>
                     </div>
                 )}
 
