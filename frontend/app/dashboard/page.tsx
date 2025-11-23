@@ -155,12 +155,12 @@ export default function DashboardPage() {
                 return prev.filter(id => id !== genreId);
 
             } else if (prev.length < 3) {
-                
+
                 // Add if under limit
                 return [...prev, genreId];
 
             } else {
-                
+
                 // At limit, don't add
                 return prev;
 
@@ -198,7 +198,7 @@ export default function DashboardPage() {
         if (!line.startsWith('data:')) return null;
 
         const json = line.slice(5).trim();
-        
+
         if (json === '[DONE]') return null;
 
         try {
@@ -222,6 +222,9 @@ export default function DashboardPage() {
         }
 
         abortControllerRef.current = new AbortController();
+
+        // Add 45 second timeout like working llm-test page
+        const timeout = setTimeout(() => abortControllerRef.current?.abort(), 45000);
 
         const isInitial = storySegments.length === 0;
         const prompt = buildPrompt(isInitial, actionPrompt);
@@ -251,8 +254,11 @@ export default function DashboardPage() {
                 }
             );
 
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status}: ${await response.text()}`);
+            clearTimeout(timeout);
+
+            if (!response.ok || !response.body) {
+                const text = await response.text().catch(() => "");
+                throw new Error(`HTTP ${response.status}: ${text || response.statusText}`);
             }
 
             const reader = response.body?.getReader();
@@ -263,7 +269,7 @@ export default function DashboardPage() {
             let buffer = '';
 
             while (true) {
-                
+
                 const { done, value } = await reader.read();
 
                 if (done) break;
@@ -271,13 +277,13 @@ export default function DashboardPage() {
                 buffer += decoder.decode(value, { stream: true });
 
                 const lines = buffer.split('\n');
-                
+
                 buffer = lines.pop() || '';
 
                 for (const line of lines) {
 
                     const content = parseSSELine(line);
-                    
+
                     if (content) {
                         accumulatedText += content;
                     }
@@ -286,7 +292,7 @@ export default function DashboardPage() {
 
             // Process remaining buffer
             if (buffer) {
-                
+
                 const content = parseSSELine(buffer);
 
                 if (content) accumulatedText += content;
@@ -306,6 +312,7 @@ export default function DashboardPage() {
             }
 
         } catch (err: any) {
+            clearTimeout(timeout);
             if (err.name !== 'AbortError') {
                 console.error('Story generation error:', err);
                 setGenerationError(err.message || 'Failed to generate story');
@@ -377,12 +384,12 @@ export default function DashboardPage() {
                         <div className="flex items-center">
                             <h1 className="text-2xl font-bold text-gray-900">AI Story Generator</h1>
                         </div>
-                        
+
                         <div className="flex items-center space-x-4">
 
                             <div className="text-sm text-gray-600">
                                 <span className="font-medium">{user.email}</span>
-                                <span className="ml-2">• API Calls: {user.apiCalls}/20</span>
+                                <span className="ml-2">API Calls: {user.apiCalls}/20</span>
                             </div>
 
                             {user.isAdmin && (
@@ -429,8 +436,8 @@ export default function DashboardPage() {
                                     onClick={() => toggleGenre(genre.id)}
                                     disabled={hasSubmitted}
                                     className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${isSelected
-                                            ? 'bg-green-500 text-white shadow-lg transform scale-105'
-                                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                        ? 'bg-green-500 text-white shadow-lg transform scale-105'
+                                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                                         } ${hasSubmitted ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'
                                         }`}
                                 >
@@ -460,8 +467,8 @@ export default function DashboardPage() {
                                     onClick={() => selectLocation(location.id)}
                                     disabled={hasSubmitted}
                                     className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${isSelected
-                                            ? 'bg-green-500 text-white shadow-lg transform scale-105'
-                                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                        ? 'bg-green-500 text-white shadow-lg transform scale-105'
+                                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                                         } ${hasSubmitted ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'
                                         }`}
                                 >
@@ -479,8 +486,8 @@ export default function DashboardPage() {
                             onClick={handleSubmit}
                             disabled={!canSubmit}
                             className={`px-8 py-4 text-lg font-semibold rounded-lg transition-all duration-200 ${canSubmit
-                                    ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-lg transform hover:scale-105'
-                                    : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                                ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-lg transform hover:scale-105'
+                                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                                 }`}
                         >
                             {isGenerating ? 'Generating Story...' : 'Generate Story'}
@@ -520,7 +527,7 @@ export default function DashboardPage() {
                     <div className="space-y-4 mb-6">
                         <h2 className="text-xl font-bold text-gray-900">Your Story</h2>
                         {storySegments.map((segment, index) => (
-                            
+
                             <div
                                 key={segment.id}
                                 className="bg-white rounded-lg shadow p-6 border-l-4 border-blue-500"
@@ -564,7 +571,7 @@ export default function DashboardPage() {
 
                         {/* Save and New Story Buttons */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4 pt-4 border-t">
-                            
+
                             <button
                                 onClick={handleSaveStory}
                                 className="px-6 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors duration-200"
