@@ -40,6 +40,65 @@ function handleValidationErrors(req, res, next) {
     next();
 }
 
+/**
+ * @swagger
+ * /api/v1/llm:
+ *   post:
+ *     summary: Generate AI story content (streaming)
+ *     tags: [LLM]
+ *     security:
+ *       - bearerAuth: []
+ *       - cookieAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - messages
+ *             properties:
+ *               messages:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     role:
+ *                       type: string
+ *                       enum: [system, user, assistant]
+ *                     content:
+ *                       type: string
+ *               model:
+ *                 type: string
+ *                 default: mistral
+ *               temperature:
+ *                 type: number
+ *                 minimum: 0
+ *                 maximum: 2
+ *                 default: 0.7
+ *               max_tokens:
+ *                 type: integer
+ *                 minimum: 1
+ *                 maximum: 4096
+ *                 default: 256
+ *     responses:
+ *       200:
+ *         description: Streaming response (text/event-stream)
+ *         content:
+ *           text/event-stream:
+ *             schema:
+ *               type: string
+ *       400:
+ *         description: Validation error
+ *       401:
+ *         description: Unauthorized
+ *       429:
+ *         description: Rate limit exceeded
+ *       500:
+ *         description: Server error
+ *       502:
+ *         description: Upstream LLM service error
+ */
 // POST /api/llm - Main LLM endpoint
 router.post('/',
     llmLimiter,

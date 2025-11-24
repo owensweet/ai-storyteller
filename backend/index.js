@@ -3,6 +3,8 @@ const cors = require('cors');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 const rateLimit = require('express-rate-limit');
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./swagger');
 
 require('dotenv').config();
 
@@ -18,11 +20,11 @@ const PORT = process.env.PORT || 3001;
 
 // Security middleware
 app.use(
-  helmet({
-    crossOriginResourcePolicy: false,
-    crossOriginOpenerPolicy: false,
-    crossOriginEmbedderPolicy: false,
-  })
+    helmet({
+        crossOriginResourcePolicy: false,
+        crossOriginOpenerPolicy: false,
+        crossOriginEmbedderPolicy: false,
+    })
 );
 
 
@@ -58,7 +60,19 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// API Routes
+// Swagger Documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+    customCss: '.swagger-ui .topbar { display: none }',
+    customSiteTitle: 'AI Storyteller API Docs'
+}));
+
+// API Routes - Version 1
+app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/llm', llmRoutes);
+app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/admin', adminRoutes);
+
+// Legacy routes (redirect to v1)
 app.use('/api/auth', authRoutes);
 app.use('/api/llm', llmRoutes);
 app.use('/api/users', userRoutes);

@@ -4,6 +4,30 @@ const { getMessage } = require('../utils/messages');
 
 const router = express.Router();
 
+/**
+ * @swagger
+ * /api/v1/users/profile:
+ *   get:
+ *     summary: Get user profile
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *       - cookieAuth: []
+ *     responses:
+ *       200:
+ *         description: User profile retrieved
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 user:
+ *                   $ref: '#/components/schemas/User'
+ *       401:
+ *         description: Unauthorized
+ *       500:
+ *         description: Server error
+ */
 // GET /api/users/profile - Get user profile
 router.get('/profile', auth, async (req, res) => {
 
