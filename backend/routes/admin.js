@@ -45,7 +45,7 @@ router.get('/users', adminAuth, async (req, res) => {
                 id: user.id,
                 email: user.email,
                 isAdmin: user.is_admin,
-                apiCalls: user.api_calls,
+                apiCalls: user.getApiCalls(),
                 createdAt: user.created_at
             }))
         });
@@ -197,9 +197,9 @@ router.get('/stats', adminAuth, async (req, res) => {
 
             totalUsers: users.length,
             adminUsers: users.filter(u => u.is_admin).length,
-            totalApiCalls: users.reduce((sum, u) => sum + u.api_calls, 0),
-            usersOverLimit: users.filter(u => u.api_calls > 20).length,
-            averageApiCalls: users.length > 0 ? (users.reduce((sum, u) => sum + u.api_calls, 0) / users.length).toFixed(2) : 0
+            totalApiCalls: users.reduce((sum, u) => sum + u.getApiCalls(), 0),
+            usersOverLimit: users.filter(u => u.getApiCalls() > 20).length,
+            averageApiCalls: users.length > 0 ? (users.reduce((sum, u) => sum + u.getApiCalls(), 0) / users.length).toFixed(2) : 0
         };
 
         res.json({ stats });

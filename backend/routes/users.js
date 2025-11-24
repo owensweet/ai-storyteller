@@ -44,8 +44,8 @@ router.get('/profile', auth, async (req, res) => {
             user: {
                 id: user.id,
                 email: user.email,
-                apiCalls: user.api_calls,
-                remainingCalls: Math.max(0, 20 - user.api_calls),
+                apiCalls: user.getApiCalls(),
+                remainingCalls: Math.max(0, 20 - user.getApiCalls()),
                 isAdmin: user.is_admin
             }
         });

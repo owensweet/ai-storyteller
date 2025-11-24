@@ -114,7 +114,7 @@ router.post('/register', registerValidation, async (req, res) => {
                 id: user.id,
                 email: user.email,
                 isAdmin: user.is_admin,
-                apiCalls: user.api_calls
+                apiCalls: await user.getApiCalls()
             }
         });
     } catch (error) {
@@ -231,7 +231,7 @@ router.post('/login', loginValidation, async (req, res) => {
                 id: user.id,
                 email: user.email,
                 isAdmin: user.is_admin,
-                apiCalls: user.api_calls
+                apiCalls: user.getApiCalls()
             }
         });
     } catch (error) {
@@ -319,7 +319,7 @@ router.get('/me', async (req, res) => {
                 id: user.id,
                 email: user.email,
                 isAdmin: user.is_admin,
-                apiCalls: user.api_calls
+                apiCalls: user.getApiCalls()
             }
         });
     } catch (error) {
