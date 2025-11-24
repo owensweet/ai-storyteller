@@ -1,6 +1,7 @@
 const express = require('express');
 const { adminAuth } = require('../middleware/auth');
 const User = require('../models/User');
+const { getMessage } = require('../utils/messages');
 
 const router = express.Router();
 
@@ -25,7 +26,7 @@ router.get('/users', adminAuth, async (req, res) => {
 
     } catch (error) {
         console.error('Get all users error:', error);
-        res.status(500).json({ error: 'Failed to get users' });
+        res.status(500).json({ error: getMessage('errors.users_fetch_failed') });
     }
 });
 
@@ -33,22 +34,22 @@ router.get('/users', adminAuth, async (req, res) => {
 router.patch('/users/:userId/reset-api-calls', adminAuth, async (req, res) => {
 
     try {
-        
+
         const { userId } = req.params;
 
         const result = await User.resetApiCalls(userId);
 
         if (result === 0) {
 
-            return res.status(404).json({ error: 'User not found' });
+            return res.status(404).json({ error: getMessage('errors.user_not_found') });
         }
 
-        res.json({ message: 'API calls reset successfully' });
+        res.json({ message: getMessage('success.api_calls_reset') });
     } catch (error) {
 
         console.error('Reset API calls error:', error);
 
-        res.status(500).json({ error: 'Failed to reset API calls' });
+        res.status(500).json({ error: getMessage('errors.reset_api_calls_failed') });
     }
 });
 
@@ -60,14 +61,14 @@ router.delete('/users/:userId', adminAuth, async (req, res) => {
         const deletedUser = await User.deleteUser(userId);
 
         if (!deletedUser) {
-            return res.status(404).json({ error: 'User not found' });
+            return res.status(404).json({ error: getMessage('errors.user_not_found') });
         }
 
-        res.json({ message: 'User deleted successfully' });
+        res.json({ message: getMessage('success.user_deleted') });
 
     } catch (error) {
         console.error('Delete user error:', error);
-        res.status(500).json({ error: 'Failed to delete user' });
+        res.status(500).json({ error: getMessage('errors.delete_user_failed') });
     }
 });
 
@@ -88,10 +89,10 @@ router.get('/stats', adminAuth, async (req, res) => {
         res.json({ stats });
 
     } catch (error) {
-        
+
         console.error('Get stats error:', error);
 
-        res.status(500).json({ error: 'Failed to get statistics' });
+        res.status(500).json({ error: getMessage('errors.stats_fetch_failed') });
     }
 });
 

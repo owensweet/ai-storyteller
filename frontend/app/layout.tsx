@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
+import { getMessage } from '@/utils/messages';
 
 const inter = Inter({
   variable: "--font-inter",
@@ -16,8 +17,8 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "AI Storyteller - Create Amazing Stories with AI",
-  description: "Generate captivating stories with our advanced AI story generator",
+  title: getMessage('app.title'),
+  description: getMessage('app.description'),
 };
 
 export default function RootLayout({

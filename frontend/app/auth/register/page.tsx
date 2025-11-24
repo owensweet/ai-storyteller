@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { getMessage } from '@/utils/messages';
 
 export default function RegisterPage() {
     const [email, setEmail] = useState('');
@@ -32,10 +33,10 @@ export default function RegisterPage() {
                 // Redirect to dashboard after successful registration
                 router.push('/dashboard');
             } else {
-                setError(data.error || 'Registration failed');
+                setError(data.error || getMessage('errors.registration_failed'));
             }
         } catch (err) {
-            setError('Network error. Please try again.');
+            setError(getMessage('errors.network_error'));
         } finally {
             setLoading(false);
         }
@@ -46,12 +47,12 @@ export default function RegisterPage() {
             <div className="max-w-md w-full space-y-8">
                 <div>
                     <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                        Create your account
+                        {getMessage('auth.create_account')}
                     </h2>
                     <p className="mt-2 text-center text-sm text-gray-600">
-                        Or{' '}
+                        {getMessage('auth.or')}{' '}
                         <Link href="/auth/login" className="font-medium text-indigo-600 hover:text-indigo-500">
-                            sign in to your existing account
+                            {getMessage('auth.sign_in_existing')}
                         </Link>
                     </p>
                 </div>
@@ -59,7 +60,7 @@ export default function RegisterPage() {
                     <div className="rounded-md shadow-sm -space-y-px">
                         <div>
                             <label htmlFor="email-address" className="sr-only">
-                                Email address
+                                {getMessage('auth.email')}
                             </label>
                             <input
                                 id="email-address"
@@ -68,14 +69,14 @@ export default function RegisterPage() {
                                 autoComplete="email"
                                 required
                                 className="relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                                placeholder="Email address"
+                                placeholder={getMessage('auth.email')}
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                             />
                         </div>
                         <div>
                             <label htmlFor="password" className="sr-only">
-                                Password
+                                {getMessage('auth.password')}
                             </label>
                             <input
                                 id="password"
@@ -84,7 +85,7 @@ export default function RegisterPage() {
                                 autoComplete="new-password"
                                 required
                                 className="relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                                placeholder="Password"
+                                placeholder={getMessage('auth.password')}
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                             />
@@ -103,7 +104,7 @@ export default function RegisterPage() {
                             disabled={loading}
                             className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
                         >
-                            {loading ? 'Creating account...' : 'Create account'}
+                            {loading ? getMessage('auth.creating_account') : getMessage('auth.create_account')}
                         </button>
                     </div>
                 </form>

@@ -2,6 +2,7 @@
 "use client";
 
 import { useCallback, useRef, useState, useEffect } from "react";
+import { getMessage } from '@/utils/messages';
 
 type ChunkHandler = (delta: string) => void;
 
@@ -105,7 +106,7 @@ async function fetchStreamed(
 }
 
 export default function LlmTestPage() {
-  const [prompt, setPrompt] = useState("Write a 1-sentence bedtime story about a friendly dragon.");
+  const [prompt, setPrompt] = useState(getMessage('llm.default_prompt'));
   const [answer, setAnswer] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "error" | "done">("idle");
   const [attempt, setAttempt] = useState(0);
@@ -138,7 +139,7 @@ export default function LlmTestPage() {
 
     if (!token) {
       console.log('[FRONTEND DEBUG] No token found, user may need to log in');
-      setErrorMsg('Please log in to use the LLM');
+      setErrorMsg(getMessage('llm.login_required'));
       setStatus("error");
       return;
     }
@@ -146,7 +147,7 @@ export default function LlmTestPage() {
     const payload = {
       model: "mistral",
       messages: [
-        { role: "system", content: "You are a concise and helpful assistant." },
+        { role: "system", content: getMessage('llm.system_message') },
         { role: "user", content: prompt },
       ],
       // API route forces stream:true upstream; no need to add it here
@@ -176,7 +177,7 @@ export default function LlmTestPage() {
         // If last attempt, surface error
         if (i === MAX_RETRIES) {
           setStatus("error");
-          setErrorMsg(err?.message || "Request failed");
+          setErrorMsg(err?.message || getMessage('llm.request_failed'));
 
           return;
 
@@ -196,16 +197,16 @@ export default function LlmTestPage() {
 
   return (
     <div className="mx-auto max-w-3xl p-6 space-y-4">
-      <h1 className="text-2xl font-bold">LLM Streaming Test</h1>
+      <h1 className="text-2xl font-bold">{getMessage('llm.title')}</h1>
 
       {/* Authentication Status - Only show when not logged in */}
       {!isAuthenticated && (
         <div className="bg-yellow-100 border border-yellow-300 rounded p-3">
           <div className="text-sm text-yellow-800">
-            <strong>Authentication is Required</strong>
+            <strong>{getMessage('llm.auth_required')}</strong>
             <div className="mt-2">
               <a href="/auth/login" className="underline hover:text-yellow-900 font-medium">
-                → Please log in first to use the LLM
+                → {getMessage('llm.login_link')}
               </a>
             </div>
           </div>
@@ -213,13 +214,13 @@ export default function LlmTestPage() {
       )}
 
       <div className="space-y-2">
-        <label className="block text-sm font-medium">Prompt</label>
+        <label className="block text-sm font-medium">{getMessage('llm.prompt_label')}</label>
         <textarea
           className="w-full rounded border p-3"
           rows={4}
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
-          placeholder="Ask something…"
+          placeholder={getMessage('llm.prompt_placeholder')}
         />
       </div>
 
@@ -229,20 +230,20 @@ export default function LlmTestPage() {
           disabled={status === "loading"}
           className="rounded bg-black text-white px-4 py-2 disabled:opacity-50"
         >
-          {status === "loading" ? "Sending…" : "Send"}
+          {status === "loading" ? getMessage('llm.sending') : getMessage('llm.send')}
         </button>
         {status === "loading" && (
           <button onClick={cancel} className="rounded border px-3 py-2">
-            Cancel
+            {getMessage('llm.cancel')}
           </button>
         )}
         <span className="text-sm text-gray-500">
-          {status === "loading" ? `Attempt ${attempt} (with retries)…` : null}
+          {status === "loading" ? getMessage('llm.attempt_status', { attempt: String(attempt) }) : null}
         </span>
       </div>
 
       <div className="space-y-2">
-        <label className="block text-sm font-medium">Response</label>
+        <label className="block text-sm font-medium">{getMessage('llm.response_label')}</label>
         <div className="w-full min-h-24 whitespace-pre-wrap rounded border p-3">
           {answer || (status === "loading" ? "…" : "—")}
         </div>
@@ -250,12 +251,12 @@ export default function LlmTestPage() {
 
       {status === "error" && (
         <div className="rounded border border-red-300 bg-red-50 p-3 text-sm text-red-700">
-          <div className="font-semibold mb-1">Request failed</div>
+          <div className="font-semibold mb-1">{getMessage('llm.error_heading')}</div>
           <div className="mb-1">{errorMsg}</div>
           <ul className="list-disc ml-5">
-            <li>Check that your API route <code>/api/llm</code> is reachable.</li>
-            <li>Confirm <code>LLM_BASE_URL</code> is correct and the VM is up.</li>
-            <li>If using TLS, ensure the proxy certificate is valid.</li>
+            <li>{getMessage('llm.tip_check_route')}</li>
+            <li>{getMessage('llm.tip_check_url')}</li>
+            <li>{getMessage('llm.tip_check_tls')}</li>
           </ul>
         </div>
       )}

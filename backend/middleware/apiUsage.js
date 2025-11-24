@@ -1,14 +1,15 @@
 const User = require('../models/User');
+const { getMessage } = require('../utils/messages');
 
 const apiUsage = async (req, res, next) => {
-    
+
     try {
 
         const user = req.user;
 
         if (!user) {
 
-            return res.status(401).json({ error: 'User not authenticated' });
+            return res.status(401).json({ error: getMessage('errors.user_not_authenticated') });
         }
 
         // Check if user has exceeded free API calls (20 calls)
@@ -26,8 +27,8 @@ const apiUsage = async (req, res, next) => {
     } catch (error) {
 
         console.error('API usage middleware error:', error);
-        
-        res.status(500).json({ error: 'Failed to track API usage' });
+
+        res.status(500).json({ error: getMessage('errors.api_usage_tracking_failed') });
     }
 };
 

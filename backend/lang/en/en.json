@@ -1,0 +1,42 @@
+{
+    "errors": {
+        "validation_failed": "Validation failed",
+        "user_exists": "User already exists with this email",
+        "registration_failed": "Failed to register user",
+        "invalid_credentials": "Invalid credentials",
+        "login_failed": "Failed to login",
+        "no_token": "No token provided",
+        "invalid_token": "Invalid token",
+        "user_not_found": "User not found",
+        "profile_fetch_failed": "Failed to get user profile",
+        "users_fetch_failed": "Failed to get users",
+        "reset_api_calls_failed": "Failed to reset API calls",
+        "delete_user_failed": "Failed to delete user",
+        "stats_fetch_failed": "Failed to get statistics",
+        "llm_not_configured": "LLM_BASE_URL is not configured",
+        "rate_limit": "Too many LLM requests, please try again later.",
+        "upstream_timeout": "Upstream timeout",
+        "upstream_fetch_failed": "Upstream fetch failed",
+        "admin_only": "Access denied. Admin only.",
+        "authentication_failed": "Authentication failed",
+        "user_not_authenticated": "User not authenticated",
+        "api_usage_tracking_failed": "Failed to track API usage"
+    },
+    "success": {
+        "registration_success": "User registered successfully",
+        "login_success": "Login successful",
+        "logout_success": "Logout successful",
+        "api_calls_reset": "API calls reset successfully",
+        "user_deleted": "User deleted successfully"
+    },
+    "validation": {
+        "email_required": "Please provide a valid email",
+        "password_min_length": "Password must be at least 3 characters long",
+        "password_required": "Password is required",
+        "messages_array_required": "Messages must be an array",
+        "messages_min_length": "At least one message is required",
+        "model_string": "Model must be a string",
+        "temperature_range": "Temperature must be between 0 and 2",
+        "max_tokens_range": "Max tokens must be between 1 and 4096"
+    }
+}

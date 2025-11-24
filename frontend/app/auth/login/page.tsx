@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { getMessage } from '@/utils/messages';
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
@@ -39,10 +40,10 @@ export default function LoginPage() {
                     router.push('/dashboard');
                 }
             } else {
-                setError(data.error || 'Login failed');
+                setError(data.error || getMessage('errors.login_failed'));
             }
         } catch (err) {
-            setError('Network error. Please try again.');
+            setError(getMessage('errors.network_error'));
         } finally {
             setLoading(false);
         }
@@ -53,12 +54,12 @@ export default function LoginPage() {
             <div className="max-w-md w-full space-y-8">
                 <div>
                     <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                        Sign in to your account
+                        {getMessage('auth.sign_in')}
                     </h2>
                     <p className="mt-2 text-center text-sm text-gray-600">
-                        Or{' '}
+                        {getMessage('auth.or')}{' '}
                         <Link href="/auth/register" className="font-medium text-indigo-600 hover:text-indigo-500">
-                            create a new account
+                            {getMessage('auth.create_account')}
                         </Link>
                     </p>
                 </div>
@@ -66,7 +67,7 @@ export default function LoginPage() {
                     <div className="rounded-md shadow-sm -space-y-px">
                         <div>
                             <label htmlFor="email-address" className="sr-only">
-                                Email address
+                                {getMessage('auth.email')}
                             </label>
                             <input
                                 id="email-address"
@@ -75,14 +76,14 @@ export default function LoginPage() {
                                 autoComplete="email"
                                 required
                                 className="relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                                placeholder="Email address"
+                                placeholder={getMessage('auth.email')}
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                             />
                         </div>
                         <div>
                             <label htmlFor="password" className="sr-only">
-                                Password
+                                {getMessage('auth.password')}
                             </label>
                             <input
                                 id="password"
@@ -91,7 +92,7 @@ export default function LoginPage() {
                                 autoComplete="current-password"
                                 required
                                 className="relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                                placeholder="Password"
+                                placeholder={getMessage('auth.password')}
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                             />
@@ -110,15 +111,15 @@ export default function LoginPage() {
                             disabled={loading}
                             className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
                         >
-                            {loading ? 'Signing in...' : 'Sign in'}
+                            {loading ? getMessage('auth.signing_in') : getMessage('auth.sign_in')}
                         </button>
                     </div>
 
                     <div className="text-center">
-                        <div className="text-sm text-gray-600 mb-2">Test Credentials:</div>
+                        <div className="text-sm text-gray-600 mb-2">{getMessage('auth.test_credentials')}</div>
                         <div className="text-xs text-gray-500">
-                            <div>User: john@john.com / 123</div>
-                            <div>Admin: admin@admin.com / 111</div>
+                            <div>{getMessage('auth.test_user')}</div>
+                            <div>{getMessage('auth.test_admin')}</div>
                         </div>
                     </div>
                 </form>

@@ -1,5 +1,6 @@
 const express = require('express');
 const { auth } = require('../middleware/auth');
+const { getMessage } = require('../utils/messages');
 
 const router = express.Router();
 
@@ -34,7 +35,7 @@ router.get('/profile', auth, async (req, res) => {
         });
 
         console.error('Get profile error:', error);
-        res.status(500).json({ error: 'Failed to get user profile' });
+        res.status(500).json({ error: getMessage('errors.profile_fetch_failed') });
     }
 });
 

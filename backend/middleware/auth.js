@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const { getMessage } = require('../utils/messages');
 
 const auth = async (req, res, next) => {
 
@@ -32,7 +33,7 @@ const auth = async (req, res, next) => {
 
         if (!token) {
             console.log('[DEBUG] No token found in either header or cookie');
-            return res.status(401).json({ error: 'No token, authorization denied' });
+            return res.status(401).json({ error: getMessage('errors.no_token') });
         }
 
         console.log('[DEBUG] Using JWT_SECRET:', process.env.JWT_SECRET ? 'Set' : 'Not set');
@@ -47,7 +48,7 @@ const auth = async (req, res, next) => {
 
         if (!user) {
             console.log('[DEBUG] User not found in database for ID:', decoded.id);
-            return res.status(401).json({ error: 'Token is not valid' });
+            return res.status(401).json({ error: getMessage('errors.invalid_token') });
         }
 
         req.user = user;
@@ -66,7 +67,7 @@ const auth = async (req, res, next) => {
 
         console.error('Auth middleware error:', error);
 
-        res.status(401).json({ error: 'Token is not valid' });
+        res.status(401).json({ error: getMessage('errors.invalid_token') });
     }
 };
 
@@ -79,13 +80,13 @@ const adminAuth = async (req, res, next) => {
 
             if (!req.user.is_admin) {
 
-                return res.status(403).json({ error: 'Access denied. Admin only.' });
+                return res.status(403).json({ error: getMessage('errors.admin_only') });
             }
             next();
         });
 
     } catch (error) {
-        res.status(401).json({ error: 'Authentication failed' });
+        res.status(401).json({ error: getMessage('errors.authentication_failed') });
     }
 };
 

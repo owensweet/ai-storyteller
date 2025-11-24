@@ -2,6 +2,7 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const { body, validationResult } = require('express-validator');
 const User = require('../models/User');
+const { getMessage } = require('../utils/messages');
 
 const router = express.Router();
 
@@ -37,7 +38,7 @@ router.post('/register', registerValidation, async (req, res) => {
 
             return res.status(400).json({
 
-                error: 'Validation failed',
+                error: getMessage('errors.validation_failed'),
                 details: errors.array()
             });
         }
@@ -47,7 +48,7 @@ router.post('/register', registerValidation, async (req, res) => {
         // Check if user already exists
         const existingUser = await User.findByEmail(email);
         if (existingUser) {
-            return res.status(400).json({ error: 'User already exists with this email' });
+            return res.status(400).json({ error: getMessage('errors.user_exists') });
         }
 
         // Create new user
@@ -67,7 +68,7 @@ router.post('/register', registerValidation, async (req, res) => {
 
         res.status(201).json({
             token: token,
-            message: 'User registered successfully',
+            message: getMessage('success.registration_success'),
             user: {
                 id: user.id,
                 email: user.email,
@@ -79,7 +80,7 @@ router.post('/register', registerValidation, async (req, res) => {
 
         console.error('Registration error:', error);
 
-        res.status(500).json({ error: 'Failed to register user' });
+        res.status(500).json({ error: getMessage('errors.registration_failed') });
     }
 });
 
@@ -95,7 +96,7 @@ router.post('/login', loginValidation, async (req, res) => {
 
             return res.status(400).json({
 
-                error: 'Validation failed',
+                error: getMessage('errors.validation_failed'),
                 details: errors.array()
             });
         }
@@ -106,14 +107,14 @@ router.post('/login', loginValidation, async (req, res) => {
         const user = await User.findByEmail(email);
 
         if (!user) {
-            return res.status(400).json({ error: 'Invalid credentials' });
+            return res.status(400).json({ error: getMessage('errors.invalid_credentials') });
         }
 
         // Verify password
         const isValidPassword = await user.verifyPassword(password, user.password);
 
         if (!isValidPassword) {
-            return res.status(400).json({ error: 'Invalid credentials' });
+            return res.status(400).json({ error: getMessage('errors.invalid_credentials') });
         }
 
         // Generate token
@@ -143,7 +144,7 @@ router.post('/login', loginValidation, async (req, res) => {
 
         res.json({
             token: token,
-            message: 'Login successful',
+            message: getMessage('success.login_success'),
             user: {
                 id: user.id,
                 email: user.email,
@@ -155,14 +156,14 @@ router.post('/login', loginValidation, async (req, res) => {
 
         console.error('Login error:', error);
 
-        res.status(500).json({ error: 'Failed to login' });
+        res.status(500).json({ error: getMessage('errors.login_failed') });
     }
 });
 
 // POST /api/auth/logout
 router.post('/logout', (req, res) => {
     res.clearCookie('token');
-    res.json({ message: 'Logout successful' });
+    res.json({ message: getMessage('success.logout_success') });
 });
 
 // GET /api/auth/me - Get current user info
@@ -176,7 +177,7 @@ router.get('/me', async (req, res) => {
         }
 
         if (!token) {
-            return res.status(401).json({ error: 'No token provided' });
+            return res.status(401).json({ error: getMessage('errors.no_token') });
         }
 
         // Verify token
@@ -186,7 +187,7 @@ router.get('/me', async (req, res) => {
         const user = await User.findById(decoded.id);
 
         if (!user) {
-            return res.status(401).json({ error: 'User not found' });
+            return res.status(401).json({ error: getMessage('errors.user_not_found') });
         }
 
         res.json({
@@ -202,7 +203,7 @@ router.get('/me', async (req, res) => {
 
         console.error('Get user error:', error);
 
-        res.status(401).json({ error: 'Invalid token' });
+        res.status(401).json({ error: getMessage('errors.invalid_token') });
     }
 });
 
