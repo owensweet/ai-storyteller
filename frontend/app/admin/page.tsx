@@ -265,7 +265,7 @@ export default function AdminPage() {
                                                         </button>
                                                     )}
 
-                                                    {/* ✅ NEW Delete button */}
+                                                    {/* NEW Delete button */}
                                                     <button
                                                         onClick={() => {
                                                             if (confirm(getMessage('admin.delete_confirm', { email: user.email }))) {
