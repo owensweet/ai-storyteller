@@ -81,6 +81,26 @@ export default function AdminPage() {
         }
     };
 
+    const deleteUser = async (userId: number) => {
+        try {
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_API_URL || 'https://ai-storyteller-production.up.railway.app'}/api/admin/users/${userId}`,
+                {
+                    method: 'DELETE',
+                    credentials: 'include',
+                }
+            );
+
+            if (response.ok) {
+                await fetchAdminData(); // refresh UI
+            } else {
+                setError('Failed to delete user');
+            }
+        } catch (err) {
+            setError('Network error');
+        }
+    };
+
     const handleLogout = async () => {
         try {
             await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://ai-storyteller-production.up.railway.app'}/api/auth/logout`, {
@@ -233,7 +253,8 @@ export default function AdminPage() {
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                     {new Date(user.createdAt).toLocaleDateString()}
                                                 </td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium flex gap-4 justify-end">
+                                                    {/* Reset button */}
                                                     {user.apiCalls > 0 && (
                                                         <button
                                                             onClick={() => resetUserApiCalls(user.id)}
@@ -242,7 +263,20 @@ export default function AdminPage() {
                                                             Reset API Calls
                                                         </button>
                                                     )}
+
+                                                    {/* ✅ NEW Delete button */}
+                                                    <button
+                                                        onClick={() => {
+                                                            if (confirm(`Delete user ${user.email}? This cannot be undone.`)) {
+                                                                deleteUser(user.id);
+                                                            }
+                                                        }}
+                                                        className="text-red-600 hover:text-red-900"
+                                                    >
+                                                        Delete
+                                                    </button>
                                                 </td>
+
                                             </tr>
                                         ))}
                                     </tbody>

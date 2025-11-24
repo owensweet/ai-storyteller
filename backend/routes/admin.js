@@ -52,6 +52,25 @@ router.patch('/users/:userId/reset-api-calls', adminAuth, async (req, res) => {
     }
 });
 
+// DELETE /api/admin/users/:userId
+router.delete('/users/:userId', adminAuth, async (req, res) => {
+    try {
+        const { userId } = req.params;
+
+        const deletedUser = await User.deleteUser(userId);
+
+        if (!deletedUser) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        res.json({ message: 'User deleted successfully' });
+
+    } catch (error) {
+        console.error('Delete user error:', error);
+        res.status(500).json({ error: 'Failed to delete user' });
+    }
+});
+
 // GET /api/admin/stats - Get system statistics
 router.get('/stats', adminAuth, async (req, res) => {
     try {

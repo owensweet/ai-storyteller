@@ -121,6 +121,12 @@ userSchema.statics.createDefaultUsers = async function () {
     }
 };
 
+// Static method to delete a user by ID
+userSchema.statics.deleteUser = async function (userId) {
+    const deletedUser = await this.findByIdAndDelete(userId);
+    return deletedUser; // returns the deleted document OR null if not found
+};
+
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;
