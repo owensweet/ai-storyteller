@@ -189,16 +189,11 @@ router.get('/stats', adminAuth, async (req, res) => {
     try {
         const users = await User.getAllUsers();
 
-        // Get all Api calls using await for all of them
-        const apiCallsArray = await Promise.all(
-            users.map(u => u.getApiCalls())
-        );
-
-        const totalApiCalls = apiCallsArray.reduce((sum, calls) => sum + calls, 0);
-        const usersOverLimit = apiCallsArray.filter(calls => calls > 20).length;
-        const averageApiCalls = users.length > 0 
-            ? (totalApiCalls / users.length).toFixed(2) 
-            : 0;
+        const totalApiCalls = users.reduce((sum, u) => sum + (u.api_calls || 0), 0);
+        const usersOverLimit = users.filter(u => (u.api_calls || 0) > 20).length;
+        const averageApiCalls = users.length > 0
+            ? (totalApiCalls / users.length).toFixed(2)
+            : '0';
 
         const stats = {
             totalUsers: users.length,
