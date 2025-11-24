@@ -20,7 +20,8 @@ const apiUsageSchema = new mongoose.Schema({
     }
 
 }, {
-    timestamps: true
+    timestamps: true,
+    collection: 'api_usage'
 });
 
 // Static method to find by userId
