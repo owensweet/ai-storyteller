@@ -1,6 +1,7 @@
 const express = require('express');
 const { adminAuth } = require('../middleware/auth');
 const User = require('../models/User');
+const EndpointStats = require('../models/EndpointStats');
 
 const router = express.Router();
 
@@ -87,7 +88,7 @@ router.get('/users', adminAuth, async (req, res) => {
 router.patch('/users/:userId/reset-api-calls', adminAuth, async (req, res) => {
 
     try {
-        
+
         const { userId } = req.params;
 
         const result = await User.resetApiCalls(userId);
@@ -205,10 +206,61 @@ router.get('/stats', adminAuth, async (req, res) => {
         res.json({ stats });
 
     } catch (error) {
-        
+
         console.error('Get stats error:', error);
 
         res.status(500).json({ error: 'Failed to get statistics' });
+    }
+});
+
+/**
+ * @swagger
+ * /api/v1/admin/endpoint-stats:
+ *   get:
+ *     summary: Get endpoint statistics (Admin only)
+ *     tags: [Admin]
+ *     security:
+ *       - bearerAuth: []
+ *       - cookieAuth: []
+ *     responses:
+ *       200:
+ *         description: Aggregated endpoint statistics
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 endpointStats:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       method:
+ *                         type: string
+ *                         example: GET
+ *                       endpoint:
+ *                         type: string
+ *                         example: /api/v1/users/profile
+ *                       requests:
+ *                         type: integer
+ *                         example: 145
+ *       403:
+ *         description: Access denied
+ *       500:
+ *         description: Server error
+ */
+// GET /api/v1/admin/endpoint-stats - Get endpoint statistics
+router.get('/endpoint-stats', adminAuth, async (req, res) => {
+    try {
+        const endpointStats = await EndpointStats.getAggregatedStats();
+
+        res.json({ endpointStats });
+
+    } catch (error) {
+
+        console.error('Get endpoint stats error:', error);
+
+        res.status(500).json({ error: 'Failed to get endpoint statistics' });
     }
 });
 

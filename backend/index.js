@@ -14,6 +14,7 @@ const userRoutes = require('./routes/users');
 const adminRoutes = require('./routes/admin');
 const connectDB = require('./models/database');
 const User = require('./models/User');
+const endpointLogger = require('./middleware/endpointLogger');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -59,6 +60,9 @@ app.options('*', cors());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+// Endpoint logging middleware (before routes)
+app.use(endpointLogger);
 
 // Swagger Documentation
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {

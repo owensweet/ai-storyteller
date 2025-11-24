@@ -21,9 +21,16 @@ interface Stats {
     averageApiCalls: string;
 }
 
+interface EndpointStat {
+    method: string;
+    endpoint: string;
+    requests: number;
+}
+
 export default function AdminPage() {
     const [users, setUsers] = useState<User[]>([]);
     const [stats, setStats] = useState<Stats | null>(null);
+    const [endpointStats, setEndpointStats] = useState<EndpointStat[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const router = useRouter();
@@ -44,12 +51,23 @@ export default function AdminPage() {
                 credentials: 'include',
             });
 
+            // Fetch endpoint stats
+            const endpointStatsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://ai-storyteller-production.up.railway.app'}/api/v1/admin/endpoint-stats`, {
+                credentials: 'include',
+            });
+
             if (usersResponse.ok && statsResponse.ok) {
                 const usersData = await usersResponse.json();
                 const statsData = await statsResponse.json();
 
                 setUsers(usersData.users);
                 setStats(statsData.stats);
+
+                // Set endpoint stats if available
+                if (endpointStatsResponse.ok) {
+                    const endpointStatsData = await endpointStatsResponse.json();
+                    setEndpointStats(endpointStatsData.endpointStats || []);
+                }
             } else {
                 if (usersResponse.status === 403 || statsResponse.status === 403) {
                     setError(getMessage('errors.admin_access_denied'));
@@ -196,6 +214,67 @@ export default function AdminPage() {
                         </div>
                     )}
 
+                    {/* Endpoint Statistics Table */}
+                    <div className="bg-white shadow overflow-hidden sm:rounded-md mb-8">
+                        <div className="px-4 py-5 sm:px-6">
+                            <h3 className="text-lg leading-6 font-medium text-gray-900">
+                                {getMessage('admin.endpoint_stats_title')}
+                            </h3>
+                            <p className="mt-1 max-w-2xl text-sm text-gray-500">
+                                {getMessage('admin.endpoint_stats_subtitle')}
+                            </p>
+                        </div>
+                        <div className="border-t border-gray-200">
+                            <div className="overflow-x-auto">
+                                <table className="min-w-full divide-y divide-gray-200">
+                                    <thead className="bg-gray-50">
+                                        <tr>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                {getMessage('admin.endpoint_method_column')}
+                                            </th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                {getMessage('admin.endpoint_path_column')}
+                                            </th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                {getMessage('admin.endpoint_requests_column')}
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="bg-white divide-y divide-gray-200">
+                                        {endpointStats.length > 0 ? (
+                                            endpointStats.map((stat, index) => (
+                                                <tr key={index}>
+                                                    <td className="px-6 py-4 whitespace-nowrap">
+                                                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded ${stat.method === 'GET' ? 'bg-blue-100 text-blue-800' :
+                                                                stat.method === 'POST' ? 'bg-green-100 text-green-800' :
+                                                                    stat.method === 'PATCH' ? 'bg-yellow-100 text-yellow-800' :
+                                                                        stat.method === 'DELETE' ? 'bg-red-100 text-red-800' :
+                                                                            'bg-gray-100 text-gray-800'
+                                                            }`}>
+                                                            {stat.method}
+                                                        </span>
+                                                    </td>
+                                                    <td className="px-6 py-4 text-sm text-gray-900">
+                                                        {stat.endpoint}
+                                                    </td>
+                                                    <td className="px-6 py-4 whitespace-nowrap">
+                                                        <div className="text-sm font-medium text-gray-900">{stat.requests}</div>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        ) : (
+                                            <tr>
+                                                <td colSpan={3} className="px-6 py-4 text-center text-sm text-gray-500">
+                                                    No endpoint statistics available yet. Make some API calls to see data.
+                                                </td>
+                                            </tr>
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
                     {/* Users Table */}
                     <div className="bg-white shadow overflow-hidden sm:rounded-md">
                         <div className="px-4 py-5 sm:px-6">
@@ -257,7 +336,7 @@ export default function AdminPage() {
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                     {new Date(user.createdAt).toLocaleDateString()}
                                                 </td>
-                                               <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
+                                                <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                                                     {user.apiCalls > 0 && (
                                                         <button
                                                             onClick={() => resetUserApiCalls(user.id)}
