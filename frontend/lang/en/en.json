@@ -57,14 +57,19 @@
         "api_calls_column": "API Calls",
         "created_column": "Created",
         "actions_column": "Actions",
-        "admin.reset_column": "Reset",
-        "admin.delete_column": "Delete",
+        "reset_column": "Reset",
+        "delete_column": "Delete",
         "role_admin": "Admin",
         "role_user": "User",
         "over_limit": "Over limit",
         "reset_button": "Reset API Calls",
         "delete_button": "Delete",
-        "delete_confirm": "Delete user {email}? This cannot be undone."
+        "delete_confirm": "Delete user {email}? This cannot be undone.",
+        "endpoint_stats_title": "API Endpoint Statistics",
+        "endpoint_stats_subtitle": "Track usage of each API endpoint",
+        "endpoint_method_column": "Method",
+        "endpoint_path_column": "Endpoint",
+        "endpoint_requests_column": "Requests"
     },
     "genres": {
         "action": "Action",
