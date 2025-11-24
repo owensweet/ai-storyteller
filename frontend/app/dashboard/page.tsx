@@ -371,7 +371,7 @@ export default function DashboardPage() {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-purple-50">
+            <div className="min-h-screen bg-violet-50">
                 <div className="text-lg">{getMessage('dashboard.loading')}</div>
             </div>
         );

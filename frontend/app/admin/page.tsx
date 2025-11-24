@@ -131,7 +131,7 @@ export default function AdminPage() {
     }
 
     return (
-        <div className="min-h-screen bg-purple-50">
+        <div className="min-h-screen bg-violet-50">
             <nav className="bg-white shadow">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
@@ -257,7 +257,7 @@ export default function AdminPage() {
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                     {new Date(user.createdAt).toLocaleDateString()}
                                                 </td>
-                                               <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                               <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                                                     {user.apiCalls > 0 && (
                                                         <button
                                                             onClick={() => resetUserApiCalls(user.id)}
@@ -267,7 +267,7 @@ export default function AdminPage() {
                                                         </button>
                                                     )}
                                                 </td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                                                     <button
                                                         onClick={() => {
                                                             if (confirm(getMessage('admin.delete_confirm', { email: user.email }))) {

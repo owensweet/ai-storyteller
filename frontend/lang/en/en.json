@@ -57,6 +57,8 @@
         "api_calls_column": "API Calls",
         "created_column": "Created",
         "actions_column": "Actions",
+        "admin.reset_column": "Reset",
+        "admin.delete_column": "Delete",
         "role_admin": "Admin",
         "role_user": "User",
         "over_limit": "Over limit",
