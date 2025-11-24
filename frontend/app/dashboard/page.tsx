@@ -132,11 +132,21 @@ export default function DashboardPage() {
 
     const handleLogout = async () => {
         try {
+            const token = localStorage.getItem('token');
+            const headers: HeadersInit = {
+                'Content-Type': 'application/json',
+            };
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+
             await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://ai-storyteller-production.up.railway.app'}/api/auth/logout`, {
                 method: 'POST',
                 credentials: 'include',
+                headers,
             });
 
+            localStorage.removeItem('token');
             router.push('/auth/login');
 
         } catch (err) {
@@ -379,9 +389,9 @@ export default function DashboardPage() {
     const canSubmit = selectedGenres.length > 0 && selectedLocation && !hasSubmitted && !isGenerating;
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-gradient-to-br from-violet-50 via-white to-purple-50">
             {/* Navigation */}
-            <nav className="bg-white shadow">
+            <nav className="bg-white/80 backdrop-blur-sm shadow-md border-b border-violet-100">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
 
@@ -399,7 +409,7 @@ export default function DashboardPage() {
                             {user.isAdmin && (
                                 <Link
                                     href="/admin"
-                                    className="px-3 py-1 text-sm bg-indigo-100 text-indigo-700 rounded hover:bg-indigo-200"
+                                    className="px-4 py-2 text-sm font-medium bg-violet-100 text-violet-700 rounded-lg hover:bg-violet-200 transition-colors"
                                 >
                                     {getMessage('dashboard.admin')}
                                 </Link>
@@ -407,7 +417,7 @@ export default function DashboardPage() {
 
                             <button
                                 onClick={handleLogout}
-                                className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700 transition"
+                                className="bg-gradient-to-r from-slate-600 to-slate-700 text-white px-4 py-2 rounded-lg hover:from-slate-700 hover:to-slate-800 transition-all shadow-sm hover:shadow"
                             >
                                 {getMessage('dashboard.logout')}
                             </button>
@@ -440,8 +450,8 @@ export default function DashboardPage() {
                                     onClick={() => toggleGenre(genre.id)}
                                     disabled={hasSubmitted}
                                     className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${isSelected
-                                        ? 'bg-green-500 text-white shadow-lg transform scale-105'
-                                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                        ? 'bg-gradient-to-r from-violet-500 to-purple-500 text-white shadow-lg transform scale-105'
+                                        : 'bg-slate-100 text-slate-700 hover:bg-violet-50 hover:text-violet-700 border border-slate-200 hover:border-violet-200'
                                         } ${hasSubmitted ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'
                                         }`}
                                 >
@@ -471,8 +481,8 @@ export default function DashboardPage() {
                                     onClick={() => selectLocation(location.id)}
                                     disabled={hasSubmitted}
                                     className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${isSelected
-                                        ? 'bg-green-500 text-white shadow-lg transform scale-105'
-                                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                        ? 'bg-gradient-to-r from-violet-500 to-purple-500 text-white shadow-lg transform scale-105'
+                                        : 'bg-slate-100 text-slate-700 hover:bg-violet-50 hover:text-violet-700 border border-slate-200 hover:border-violet-200'
                                         } ${hasSubmitted ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'
                                         }`}
                                 >
@@ -489,15 +499,16 @@ export default function DashboardPage() {
                         <button
                             onClick={handleSubmit}
                             disabled={!canSubmit}
-                            className={`px-8 py-4 text-lg font-semibold rounded-lg transition-all duration-200 ${canSubmit
-                                ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-lg transform hover:scale-105'
-                                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                            className={`px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-200 ${canSubmit
+                                ? 'bg-gradient-to-r from-violet-600 to-purple-600 text-white hover:from-violet-700 hover:to-purple-700 shadow-lg hover:shadow-xl transform hover:scale-105'
+                                : 'bg-slate-200 text-slate-400 cursor-not-allowed'
                                 }`}
                         >
                             {isGenerating ? getMessage('dashboard.generating_story') : getMessage('dashboard.generate_story')}
                         </button>
                     </div>
                 )}
+
 
                 {/* Message after submission */}
                 {hasSubmitted && storySegments.length === 0 && isGenerating && (
@@ -510,7 +521,7 @@ export default function DashboardPage() {
 
                 {/* Message about editing */}
                 {hasSubmitted && (
-                    <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
+                    <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6 shadow-sm">
                         <p className="text-sm text-amber-800 text-center">
                             {getMessage('dashboard.edit_selections')}
                         </p>
@@ -519,13 +530,13 @@ export default function DashboardPage() {
 
                 {/* Error Display */}
                 {generationError && (
-                    <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+                    <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-6 shadow-sm">
                         <p className="text-sm text-red-800 mb-3">
                             <strong>Error:</strong> {generationError}
                         </p>
                         <button
                             onClick={handleNewStory}
-                            className="px-6 py-2 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors duration-200"
+                            className="px-6 py-2 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-lg font-semibold hover:from-red-700 hover:to-red-800 transition-all duration-200 shadow-sm hover:shadow"
                         >
                             {getMessage('dashboard.new_story')}
                         </button>
@@ -540,18 +551,18 @@ export default function DashboardPage() {
 
                             <div
                                 key={segment.id}
-                                className="bg-white rounded-lg shadow p-6 border-l-4 border-blue-500"
+                                className="bg-white border border-violet-100 rounded-xl shadow-md p-6 border-l-4 border-l-violet-500 hover:shadow-lg transition-shadow"
                             >
                                 <div className="flex justify-between items-start mb-2">
                                     <span className="text-sm font-semibold text-blue-600">
                                         {getMessage('dashboard.segment')} {index + 1}
                                     </span>
-                                    <span className="text-xs text-gray-500">
+                                    <span className="text-xs text-slate-500">
                                         {segment.timestamp.toLocaleTimeString()}
                                     </span>
                                 </div>
 
-                                <p className="text-gray-800 leading-relaxed whitespace-pre-wrap">
+                                <p className="text-slate-800 leading-relaxed whitespace-pre-wrap">
                                     {segment.text}
                                 </p>
 
@@ -562,8 +573,8 @@ export default function DashboardPage() {
 
                 {/* Action Buttons (shown after first story generation) */}
                 {storySegments.length > 0 && !isGenerating && (
-                    <div className="bg-white rounded-lg shadow p-6">
-                        <h3 className="text-lg font-semibold text-gray-900 mb-4">{getMessage('dashboard.continue_story')}</h3>
+                    <div className="bg-white border border-violet-100 rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow">
+                        <h3 className="text-lg font-semibold text-slate-900 mb-4">{getMessage('dashboard.continue_story')}</h3>
 
                         {/* Random Action Buttons */}
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
@@ -572,7 +583,7 @@ export default function DashboardPage() {
                                     key={action.id}
                                     onClick={() => handleActionClick(action)}
                                     disabled={isGenerating}
-                                    className="px-4 py-3 bg-purple-100 text-purple-700 rounded-lg font-medium hover:bg-purple-200 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="px-4 py-3 bg-violet-50 text-violet-700 border border-violet-200 rounded-lg font-medium hover:bg-violet-100 hover:border-violet-300 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     {action.label}
                                 </button>
@@ -580,18 +591,18 @@ export default function DashboardPage() {
                         </div>
 
                         {/* Save and New Story Buttons */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4 pt-4 border-t">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4 pt-4 border-t border-violet-100">
 
                             <button
                                 onClick={handleSaveStory}
-                                className="px-6 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors duration-200"
+                                className="px-6 py-3 bg-gradient-to-r from-emerald-600 to-green-600 text-white rounded-lg font-semibold hover:from-emerald-700 hover:to-green-700 transition-all duration-200 shadow-sm hover:shadow"
                             >
                                 {getMessage('dashboard.save_story')}
                             </button>
 
                             <button
                                 onClick={handleNewStory}
-                                className="px-6 py-3 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors duration-200"
+                                className="px-6 py-3 bg-gradient-to-r from-slate-600 to-slate-700 text-white rounded-lg font-semibold hover:from-slate-700 hover:to-slate-800 transition-all duration-200 shadow-sm hover:shadow"
                             >
                                 {getMessage('dashboard.new_story')}
                             </button>
@@ -602,8 +613,8 @@ export default function DashboardPage() {
 
                 {/* Loading indicator during generation */}
                 {isGenerating && storySegments.length > 0 && (
-                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4">
-                        <p className="text-sm text-blue-800 text-center animate-pulse">
+                    <div className="bg-gradient-to-r from-violet-50 to-purple-50 border border-violet-200 rounded-xl p-4 mt-4 shadow-sm">
+                        <p className="text-sm text-violet-800 text-center animate-pulse font-medium">
                             {getMessage('dashboard.generating_next')}
                         </p>
                     </div>

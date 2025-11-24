@@ -67,6 +67,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
 }));
 
 // API Routes - Version 1
+// API Routes
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/llm', llmRoutes);
 app.use('/api/v1/users', userRoutes);

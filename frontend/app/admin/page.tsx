@@ -35,12 +35,12 @@ export default function AdminPage() {
     const fetchAdminData = async () => {
         try {
             // Fetch users
-            const usersResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://ai-storyteller-production.up.railway.app'}/api/admin/users`, {
+            const usersResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://ai-storyteller-production.up.railway.app'}/api/v1/admin/users`, {
                 credentials: 'include',
             });
 
             // Fetch stats
-            const statsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://ai-storyteller-production.up.railway.app'}/api/admin/stats`, {
+            const statsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://ai-storyteller-production.up.railway.app'}/api/v1/admin/stats`, {
                 credentials: 'include',
             });
 
@@ -66,7 +66,7 @@ export default function AdminPage() {
 
     const resetUserApiCalls = async (userId: number) => {
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://ai-storyteller-production.up.railway.app'}/api/admin/users/${userId}/reset-api-calls`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://ai-storyteller-production.up.railway.app'}/api/v1/admin/users/${userId}/reset-api-calls`, {
                 method: 'PATCH',
                 credentials: 'include',
             });
@@ -85,7 +85,7 @@ export default function AdminPage() {
     const deleteUser = async (userId: number) => {
         try {
             const response = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL || 'https://ai-storyteller-production.up.railway.app'}/api/admin/users/${userId}`,
+                `${process.env.NEXT_PUBLIC_API_URL || 'https://ai-storyteller-production.up.railway.app'}/api/v1/admin/users/${userId}`,
                 {
                     method: 'DELETE',
                     credentials: 'include',
@@ -104,7 +104,7 @@ export default function AdminPage() {
 
     const handleLogout = async () => {
         try {
-            await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://ai-storyteller-production.up.railway.app'}/api/auth/logout`, {
+            await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://ai-storyteller-production.up.railway.app'}/api/v1/auth/logout`, {
                 method: 'POST',
                 credentials: 'include',
             });
@@ -265,7 +265,7 @@ export default function AdminPage() {
                                                         </button>
                                                     )}
 
-                                                    {/* NEW Delete button */}
+                                                    {/* Delete button */}
                                                     <button
                                                         onClick={() => {
                                                             if (confirm(getMessage('admin.delete_confirm', { email: user.email }))) {

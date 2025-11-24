@@ -18,7 +18,7 @@ export default function RegisterPage() {
         setError('');
 
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://ai-storyteller-production.up.railway.app'}/api/auth/register`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://ai-storyteller-production.up.railway.app'}/api/v1/auth/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -30,6 +30,10 @@ export default function RegisterPage() {
             const data = await response.json();
 
             if (response.ok) {
+                // Save token to localStorage if provided
+                if (data.token) {
+                    localStorage.setItem('token', data.token);
+                }
                 // Redirect to dashboard after successful registration
                 router.push('/dashboard');
             } else {
