@@ -37,19 +37,14 @@ router.get('/users', adminAuth, async (req, res) => {
     try {
         const users = await User.getAllUsers();
 
-        // Map through users and await each getApiCalls()
-        const usersWithApiCalls = await Promise.all(
-            users.map(async (user) => ({
-                id: user.id || user._id,
+        res.json({
+            users: users.map(user => ({
+                id: user._id,
                 email: user.email,
                 isAdmin: user.is_admin,
-                apiCalls: await user.getApiCalls(),
-                createdAt: user.createdAt || user.created_at
+                apiCalls: user.api_calls || 0,
+                createdAt: user.createdAt
             }))
-        );
-
-        res.json({
-            users: usersWithApiCalls
         });
 
     } catch (error) {
