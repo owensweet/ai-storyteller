@@ -189,20 +189,30 @@ router.get('/stats', adminAuth, async (req, res) => {
     try {
         const users = await User.getAllUsers();
 
-        const stats = {
+        // Get all Api calls using await for all of them
+        const apiCallsArray = await Promise.all(
+            users.map(u => u.getApiCalls())
+        );
 
+        const totalApiCalls = apiCallsArray.reduce((sum, calls) => sum + calls, 0);
+        const usersOverLimit = apiCallsArray.filter(calls => calls > 20).length;
+        const averageApiCalls = users.length > 0 
+            ? (totalApiCalls / users.length).toFixed(2) 
+            : 0;
+
+        const stats = {
             totalUsers: users.length,
             adminUsers: users.filter(u => u.is_admin).length,
-            totalApiCalls: users.reduce((sum, u) => sum + (u.api_calls || 0), 0),
-            usersOverLimit: users.filter(u => (u.api_calls || 0) > 20).length,
-            averageApiCalls: users.length > 0 ? (users.reduce((sum, u) => sum + (u.api_calls || 0), 0) / users.length).toFixed(2) : '0'
+            totalApiCalls: totalApiCalls,
+            usersOverLimit: usersOverLimit,
+            averageApiCalls: averageApiCalls
         };
 
         res.json({ stats });
 
     } catch (error) {
-
-        console.error('Get stats error:', error); res.status(500).json({ error: 'Failed to get statistics' });
+        console.error('Get stats error:', error);
+        res.status(500).json({ error: 'Failed to get statistics' });
     }
 });
 
