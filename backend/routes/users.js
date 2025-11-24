@@ -40,12 +40,13 @@ router.get('/profile', auth, async (req, res) => {
 
         console.log('[DEBUG] Sending profile response for user:', user.email);
 
+        const apiCalls = await user.getApiCalls();
         res.json({
             user: {
                 id: user.id,
                 email: user.email,
-                apiCalls: user.getApiCalls(),
-                remainingCalls: Math.max(0, 20 - user.getApiCalls()),
+                apiCalls: apiCalls,
+                remainingCalls: Math.max(0, 20 - apiCalls),
                 isAdmin: user.is_admin
             }
         });

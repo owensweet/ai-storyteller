@@ -1,1 +1,18 @@
-[00:00:01.847] Server  LOG      ✓ Ready in 1324ms
+[00:00:03.714] Server  LOG      ✓ Ready in 2.5s
+[00:00:23.436] Browser WARN    Message key not found: admin.reset_column
+[00:00:23.437] Browser WARN    Message key not found: admin.delete_column
+[00:00:23.437] Browser WARN    Message key not found: admin.reset_column
+[00:00:23.437] Browser WARN    Message key not found: admin.delete_column
+[00:00:31.769] Browser WARN    Message key not found: admin.reset_column
+[00:00:31.769] Browser WARN    Message key not found: admin.delete_column
+[00:00:31.769] Browser WARN    Message key not found: admin.reset_column
+[00:00:31.769] Browser WARN    Message key not found: admin.delete_column
+[00:01:36.802] Browser LOG     [FRONTEND DEBUG] Token from localStorage: Found
+[00:01:36.803] Browser LOG     [FRONTEND DEBUG] Making profile request with token
+[00:01:36.803] Browser LOG     [2;38;2;124;124;124m%s[0m [FRONTEND DEBUG] Token from localStorage: Found
+[00:01:36.803] Browser LOG     [2;38;2;124;124;124m%s[0m [FRONTEND DEBUG] Making profile request with token
+[00:01:37.056] Browser LOG     [FRONTEND DEBUG] Profile response status: 200
+[00:01:37.056] Browser LOG     [FRONTEND DEBUG] Profile data received: {"user":{"apiCalls":{},"email":"john@john.com","id":"69081b722a5b82ad3e2998be","isAdmin":false,"remainingCalls":null}}
+[00:01:37.056] Browser ERROR   uncaughtError: Error: Objects are not valid as a React child (found: object with keys {}). If you meant to render a collection of children, use an array instead.
+[00:01:37.056] Browser LOG     [FRONTEND DEBUG] Profile response status: 200
+[00:01:37.056] Browser LOG     [FRONTEND DEBUG] Profile data received: {"user":{"apiCalls":{},"email":"john@john.com","id":"69081b722a5b82ad3e2998be","isAdmin":false,"remainingCalls":null}}

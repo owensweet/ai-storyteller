@@ -1,0 +1,136 @@
+module.exports = [
+"[next]/internal/font/google/inter_7b064e0d.module.css [app-rsc] (css module)", ((__turbopack_context__) => {
+
+__turbopack_context__.v({
+  "className": "inter_7b064e0d-module__MOT0tq__className",
+  "variable": "inter_7b064e0d-module__MOT0tq__variable",
+});
+}),
+"[next]/internal/font/google/inter_7b064e0d.js [app-rsc] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "default",
+    ()=>__TURBOPACK__default__export__
+]);
+var __TURBOPACK__imported__module__$5b$next$5d2f$internal$2f$font$2f$google$2f$inter_7b064e0d$2e$module$2e$css__$5b$app$2d$rsc$5d$__$28$css__module$29$__ = __turbopack_context__.i("[next]/internal/font/google/inter_7b064e0d.module.css [app-rsc] (css module)");
+;
+const fontData = {
+    className: __TURBOPACK__imported__module__$5b$next$5d2f$internal$2f$font$2f$google$2f$inter_7b064e0d$2e$module$2e$css__$5b$app$2d$rsc$5d$__$28$css__module$29$__["default"].className,
+    style: {
+        fontFamily: "'Inter', 'Inter Fallback'",
+        fontStyle: "normal"
+    }
+};
+if (__TURBOPACK__imported__module__$5b$next$5d2f$internal$2f$font$2f$google$2f$inter_7b064e0d$2e$module$2e$css__$5b$app$2d$rsc$5d$__$28$css__module$29$__["default"].variable != null) {
+    fontData.variable = __TURBOPACK__imported__module__$5b$next$5d2f$internal$2f$font$2f$google$2f$inter_7b064e0d$2e$module$2e$css__$5b$app$2d$rsc$5d$__$28$css__module$29$__["default"].variable;
+}
+const __TURBOPACK__default__export__ = fontData;
+}),
+"[next]/internal/font/google/playfair_display_f07c69c.module.css [app-rsc] (css module)", ((__turbopack_context__) => {
+
+__turbopack_context__.v({
+  "className": "playfair_display_f07c69c-module__AEbavq__className",
+  "variable": "playfair_display_f07c69c-module__AEbavq__variable",
+});
+}),
+"[next]/internal/font/google/playfair_display_f07c69c.js [app-rsc] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "default",
+    ()=>__TURBOPACK__default__export__
+]);
+var __TURBOPACK__imported__module__$5b$next$5d2f$internal$2f$font$2f$google$2f$playfair_display_f07c69c$2e$module$2e$css__$5b$app$2d$rsc$5d$__$28$css__module$29$__ = __turbopack_context__.i("[next]/internal/font/google/playfair_display_f07c69c.module.css [app-rsc] (css module)");
+;
+const fontData = {
+    className: __TURBOPACK__imported__module__$5b$next$5d2f$internal$2f$font$2f$google$2f$playfair_display_f07c69c$2e$module$2e$css__$5b$app$2d$rsc$5d$__$28$css__module$29$__["default"].className,
+    style: {
+        fontFamily: "'Playfair Display', 'Playfair Display Fallback'",
+        fontStyle: "normal"
+    }
+};
+if (__TURBOPACK__imported__module__$5b$next$5d2f$internal$2f$font$2f$google$2f$playfair_display_f07c69c$2e$module$2e$css__$5b$app$2d$rsc$5d$__$28$css__module$29$__["default"].variable != null) {
+    fontData.variable = __TURBOPACK__imported__module__$5b$next$5d2f$internal$2f$font$2f$google$2f$playfair_display_f07c69c$2e$module$2e$css__$5b$app$2d$rsc$5d$__$28$css__module$29$__["default"].variable;
+}
+const __TURBOPACK__default__export__ = fontData;
+}),
+"[project]/lang/en/en.json (json)", ((__turbopack_context__) => {
+
+__turbopack_context__.v({"app":{"title":"AI Storyteller - Create Amazing Stories with AI","description":"Generate captivating stories with our advanced AI story generator","redirecting":"Redirecting to login..."},"auth":{"sign_in":"Sign in","signing_in":"Signing in...","sign_in_existing":"sign in to your existing account","create_account":"create a new account","creating_account":"Creating account...","or":"Or","email":"Email address","password":"Password","test_credentials":"Test Credentials:","test_user":"User: john@john.com / 123","test_admin":"Admin: admin@admin.com / 111"},"dashboard":{"title":"AI Story Generator","instructions":"Please select up to 3 genres and 1 location setting to generate your story.","select_genres":"Select Genres","choose_up_to_3":"(Choose up to 3)","select_location":"Select Location Setting","choose_1":"(Choose 1)","generate_story":"Generate Story","generating_story":"Generating Story...","generating_wait":"Generating your story... Please wait.","edit_selections":"To edit your genre or location selections, please click \"New Story\" to start over.","max_genres":"Maximum 3 genres selected. Deselect one to choose another.","your_story":"Your Story","segment":"Segment","continue_story":"Continue Your Story","save_story":"Save Story","new_story":"New Story","generating_next":"Generating next part of your story...","api_calls":"API Calls","logout":"Logout","admin":"Admin","loading":"Loading...","back_to_dashboard":"Back to Dashboard"},"admin":{"title":"AI Storyteller - Admin Panel","loading":"Loading admin panel...","back_to_dashboard":"Back to Dashboard","total_users":"Total Users","admin_users":"Admin Users","total_api_calls":"Total API Calls","users_over_limit":"Users Over Limit","avg_api_calls":"Avg API Calls","user_management":"User Management","monitor_users":"Monitor and manage user API consumption","user_column":"User","role_column":"Role","api_calls_column":"API Calls","created_column":"Created","actions_column":"Actions","admin.reset_column":"Reset","admin.delete_column":"Delete","role_admin":"Admin","role_user":"User","over_limit":"Over limit","reset_button":"Reset API Calls","delete_button":"Delete","delete_confirm":"Delete user {email}? This cannot be undone."},"genres":{"action":"Action","action_prompt":"with intense action sequences and thrilling battles","adventure":"Adventure","adventure_prompt":"featuring exciting adventures and exploration","slice_of_life":"Slice of Life","slice_of_life_prompt":"depicting everyday life and relatable experiences","thriller":"Thriller","thriller_prompt":"with suspenseful and tension-filled moments","mystery":"Mystery","mystery_prompt":"containing intriguing mysteries and puzzles to solve","romance":"Romance","romance_prompt":"with heartfelt romantic relationships and emotions","horror":"Horror","horror_prompt":"featuring scary and unsettling elements"},"locations":{"fantasy":"Fantasy","fantasy_prompt":"Set in a magical fantasy world with mythical creatures and ancient powers","sci_fi":"Sci-Fi","sci_fi_prompt":"Set in a futuristic science fiction world with advanced technology and space travel","realistic":"Realistic","realistic_prompt":"Set in a contemporary realistic world similar to our own","alternate_history":"Alternate History","alternate_history_prompt":"Set in an alternate history timeline where key events unfolded differently"},"actions":{"more_action":"More Action","more_action_prompt":"Add more action and excitement to the story","more_intrigue":"More Intrigue","more_intrigue_prompt":"Increase the intrigue and mystery","more_comedy":"More Comedy","more_comedy_prompt":"Add humorous and comedic elements","more_drama":"More Drama","more_drama_prompt":"Heighten the dramatic tension","more_emotion":"More Emotion","more_emotion_prompt":"Deepen the emotional connections","plot_twist":"Plot Twist","plot_twist_prompt":"Introduce an unexpected plot twist","character_focus":"Character Focus","character_focus_prompt":"Focus more on character development","world_building":"World Building","world_building_prompt":"Expand on the world and setting","faster_pace":"Faster Pace","faster_pace_prompt":"Speed up the pacing of the story","slower_pace":"Slower Pace","slower_pace_prompt":"Slow down and add more detail"},"errors":{"network_error":"Network error. Please try again.","login_failed":"Login failed","registration_failed":"Registration failed","select_genre_location":"Please select at least 1 genre and 1 location setting","no_content_received":"No story content received. Please try again.","story_generation_failed":"Failed to generate story","admin_access_denied":"Access denied. Admin privileges required.","admin_data_load_failed":"Failed to load admin data","reset_api_calls_failed":"Failed to reset API calls","delete_user_failed":"Failed to delete user"},"llm":{"title":"LLM Streaming Test","default_prompt":"Write a 1-sentence bedtime story about a friendly dragon.","auth_required":"Authentication is Required","login_link":"Please log in first to use the LLM","login_required":"Please log in to use the LLM","system_message":"You are a concise and helpful assistant.","request_failed":"Request failed","prompt_label":"Prompt","prompt_placeholder":"Ask something…","send":"Send","sending":"Sending…","cancel":"Cancel","response_label":"Response","attempt_status":"Attempt {attempt} (with retries)…","error_heading":"Request failed","tip_check_route":"Check that your API route /api/llm is reachable.","tip_check_url":"Confirm LLM_BASE_URL is correct and the VM is up.","tip_check_tls":"If using TLS, ensure the proxy certificate is valid."}});}),
+"[project]/utils/messages.ts [app-rsc] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "getMessage",
+    ()=>getMessage
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$lang$2f$en$2f$en$2e$json__$28$json$29$__ = __turbopack_context__.i("[project]/lang/en/en.json (json)");
+;
+function getMessage(key, replacements = {}) {
+    const keys = key.split('.');
+    let message = __TURBOPACK__imported__module__$5b$project$5d2f$lang$2f$en$2f$en$2e$json__$28$json$29$__["default"];
+    for (const k of keys){
+        message = message[k];
+        if (message === undefined) {
+            console.warn(`Message key not found: ${key}`);
+            return key;
+        }
+    }
+    // Replace placeholders like {variable}
+    if (typeof message === 'string' && Object.keys(replacements).length > 0) {
+        return message.replace(/\{(\w+)\}/g, (match, placeholder)=>{
+            return String(replacements[placeholder] || match);
+        });
+    }
+    return message;
+}
+}),
+"[project]/app/layout.tsx [app-rsc] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "default",
+    ()=>RootLayout,
+    "metadata",
+    ()=>metadata
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/rsc/react-jsx-dev-runtime.js [app-rsc] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$next$5d2f$internal$2f$font$2f$google$2f$inter_7b064e0d$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[next]/internal/font/google/inter_7b064e0d.js [app-rsc] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$next$5d2f$internal$2f$font$2f$google$2f$playfair_display_f07c69c$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[next]/internal/font/google/playfair_display_f07c69c.js [app-rsc] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$messages$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/utils/messages.ts [app-rsc] (ecmascript)");
+;
+;
+;
+;
+;
+const metadata = {
+    title: (0, __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$messages$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["getMessage"])('app.title'),
+    description: (0, __TURBOPACK__imported__module__$5b$project$5d2f$utils$2f$messages$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["getMessage"])('app.description')
+};
+function RootLayout({ children }) {
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("html", {
+        lang: "en",
+        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$rsc$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["jsxDEV"])("body", {
+            className: `${__TURBOPACK__imported__module__$5b$next$5d2f$internal$2f$font$2f$google$2f$inter_7b064e0d$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"].variable} ${__TURBOPACK__imported__module__$5b$next$5d2f$internal$2f$font$2f$google$2f$playfair_display_f07c69c$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["default"].variable} antialiased font-sans`,
+            children: children
+        }, void 0, false, {
+            fileName: "[project]/app/layout.tsx",
+            lineNumber: 31,
+            columnNumber: 7
+        }, this)
+    }, void 0, false, {
+        fileName: "[project]/app/layout.tsx",
+        lineNumber: 30,
+        columnNumber: 5
+    }, this);
+}
+}),
+"[project]/node_modules/next/dist/server/route-modules/app-page/vendored/rsc/react-jsx-dev-runtime.js [app-rsc] (ecmascript)", ((__turbopack_context__, module, exports) => {
+"use strict";
+
+module.exports = __turbopack_context__.r("[project]/node_modules/next/dist/server/route-modules/app-page/module.compiled.js [app-rsc] (ecmascript)").vendored['react-rsc'].ReactJsxDevRuntime; //# sourceMappingURL=react-jsx-dev-runtime.js.map
+}),
+];
+
+//# sourceMappingURL=%5Broot-of-the-server%5D__8f73376b._.js.map
