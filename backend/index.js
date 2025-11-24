@@ -59,10 +59,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // API Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/llm', llmRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/admin', adminRoutes);
+app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/llm', llmRoutes);
+app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/admin', adminRoutes);
 
 // Health check endpoint
 app.get('/health', (req, res) => {

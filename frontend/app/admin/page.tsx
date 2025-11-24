@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { getMessage } from '@/utils/messages';
 
 interface User {
     id: number;
@@ -35,12 +34,12 @@ export default function AdminPage() {
     const fetchAdminData = async () => {
         try {
             // Fetch users
-            const usersResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://ai-storyteller-production.up.railway.app'}/api/admin/users`, {
+            const usersResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://ai-storyteller-production.up.railway.app'}/api/v1/admin/users`, {
                 credentials: 'include',
             });
 
             // Fetch stats
-            const statsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://ai-storyteller-production.up.railway.app'}/api/admin/stats`, {
+            const statsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://ai-storyteller-production.up.railway.app'}/api/v1/admin/stats`, {
                 credentials: 'include',
             });
 
@@ -52,13 +51,13 @@ export default function AdminPage() {
                 setStats(statsData.stats);
             } else {
                 if (usersResponse.status === 403 || statsResponse.status === 403) {
-                    setError(getMessage('errors.admin_access_denied'));
+                    setError('Access denied. Admin privileges required.');
                 } else {
                     router.push('/auth/login');
                 }
             }
         } catch (err) {
-            setError(getMessage('errors.admin_data_load_failed'));
+            setError('Failed to load admin data');
         } finally {
             setLoading(false);
         }
@@ -66,7 +65,7 @@ export default function AdminPage() {
 
     const resetUserApiCalls = async (userId: number) => {
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://ai-storyteller-production.up.railway.app'}/api/admin/users/${userId}/reset-api-calls`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://ai-storyteller-production.up.railway.app'}/api/v1/admin/users/${userId}/reset-api-calls`, {
                 method: 'PATCH',
                 credentials: 'include',
             });
@@ -75,17 +74,17 @@ export default function AdminPage() {
                 // Refresh data
                 await fetchAdminData();
             } else {
-                setError(getMessage('errors.reset_api_calls_failed'));
+                setError('Failed to reset API calls');
             }
         } catch (err) {
-            setError(getMessage('errors.network_error'));
+            setError('Network error');
         }
     };
 
     const deleteUser = async (userId: number) => {
         try {
             const response = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL || 'https://ai-storyteller-production.up.railway.app'}/api/admin/users/${userId}`,
+                `${process.env.NEXT_PUBLIC_API_URL || 'https://ai-storyteller-production.up.railway.app'}/api/v1/admin/users/${userId}`,
                 {
                     method: 'DELETE',
                     credentials: 'include',
@@ -95,16 +94,16 @@ export default function AdminPage() {
             if (response.ok) {
                 await fetchAdminData(); // refresh UI
             } else {
-                setError(getMessage('errors.delete_user_failed'));
+                setError('Failed to delete user');
             }
         } catch (err) {
-            setError(getMessage('errors.network_error'));
+            setError('Network error');
         }
     };
 
     const handleLogout = async () => {
         try {
-            await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://ai-storyteller-production.up.railway.app'}/api/auth/logout`, {
+            await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://ai-storyteller-production.up.railway.app'}/api/v1/auth/logout`, {
                 method: 'POST',
                 credentials: 'include',
             });
@@ -117,7 +116,7 @@ export default function AdminPage() {
     if (loading) {
         return (
             <div className="min-h-screen flex items-center justify-center">
-                <div className="text-lg">{getMessage('admin.loading')}</div>
+                <div className="text-lg">Loading admin panel...</div>
             </div>
         );
     }
@@ -136,17 +135,17 @@ export default function AdminPage() {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
                         <div className="flex items-center">
-                            <h1 className="text-xl font-semibold">{getMessage('admin.title')}</h1>
+                            <h1 className="text-xl font-semibold">AI Storyteller - Admin Panel</h1>
                         </div>
                         <div className="flex items-center space-x-4">
                             <Link href="/dashboard" className="text-blue-600 hover:text-blue-800">
-                                {getMessage('admin.back_to_dashboard')}
+                                Back to Dashboard
                             </Link>
                             <button
                                 onClick={handleLogout}
                                 className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
                             >
-                                {getMessage('dashboard.logout')}
+                                Logout
                             </button>
                         </div>
                     </div>
@@ -161,35 +160,35 @@ export default function AdminPage() {
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
                             <div className="bg-white overflow-hidden shadow rounded-lg">
                                 <div className="p-5">
-                                    <div className="text-sm font-medium text-gray-500">{getMessage('admin.total_users')}</div>
+                                    <div className="text-sm font-medium text-gray-500">Total Users</div>
                                     <div className="text-2xl font-bold text-gray-900">{stats.totalUsers}</div>
                                 </div>
                             </div>
 
                             <div className="bg-white overflow-hidden shadow rounded-lg">
                                 <div className="p-5">
-                                    <div className="text-sm font-medium text-gray-500">{getMessage('admin.admin_users')}</div>
+                                    <div className="text-sm font-medium text-gray-500">Admin Users</div>
                                     <div className="text-2xl font-bold text-gray-900">{stats.adminUsers}</div>
                                 </div>
                             </div>
 
                             <div className="bg-white overflow-hidden shadow rounded-lg">
                                 <div className="p-5">
-                                    <div className="text-sm font-medium text-gray-500">{getMessage('admin.total_api_calls')}</div>
+                                    <div className="text-sm font-medium text-gray-500">Total API Calls</div>
                                     <div className="text-2xl font-bold text-gray-900">{stats.totalApiCalls}</div>
                                 </div>
                             </div>
 
                             <div className="bg-white overflow-hidden shadow rounded-lg">
                                 <div className="p-5">
-                                    <div className="text-sm font-medium text-gray-500">{getMessage('admin.users_over_limit')}</div>
+                                    <div className="text-sm font-medium text-gray-500">Users Over Limit</div>
                                     <div className="text-2xl font-bold text-red-600">{stats.usersOverLimit}</div>
                                 </div>
                             </div>
 
                             <div className="bg-white overflow-hidden shadow rounded-lg">
                                 <div className="p-5">
-                                    <div className="text-sm font-medium text-gray-500">{getMessage('admin.avg_api_calls')}</div>
+                                    <div className="text-sm font-medium text-gray-500">Avg API Calls</div>
                                     <div className="text-2xl font-bold text-gray-900">{stats.averageApiCalls}</div>
                                 </div>
                             </div>
@@ -200,10 +199,10 @@ export default function AdminPage() {
                     <div className="bg-white shadow overflow-hidden sm:rounded-md">
                         <div className="px-4 py-5 sm:px-6">
                             <h3 className="text-lg leading-6 font-medium text-gray-900">
-                                {getMessage('admin.user_management')}
+                                User Management
                             </h3>
                             <p className="mt-1 max-w-2xl text-sm text-gray-500">
-                                {getMessage('admin.monitor_users')}
+                                Monitor and manage user API consumption
                             </p>
                         </div>
                         <div className="border-t border-gray-200">
@@ -212,19 +211,19 @@ export default function AdminPage() {
                                     <thead className="bg-gray-50">
                                         <tr>
                                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                {getMessage('admin.user_column')}
+                                                User
                                             </th>
                                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                {getMessage('admin.role_column')}
+                                                Role
                                             </th>
                                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                {getMessage('admin.api_calls_column')}
+                                                API Calls
                                             </th>
                                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                {getMessage('admin.created_column')}
+                                                Created
                                             </th>
                                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                {getMessage('admin.actions_column')}
+                                                Actions
                                             </th>
                                         </tr>
                                     </thead>
@@ -237,10 +236,10 @@ export default function AdminPage() {
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${user.isAdmin
-                                                        ? 'bg-purple-100 text-purple-800'
-                                                        : 'bg-green-100 text-green-800'
+                                                            ? 'bg-purple-100 text-purple-800'
+                                                            : 'bg-green-100 text-green-800'
                                                         }`}>
-                                                        {user.isAdmin ? getMessage('admin.role_admin') : getMessage('admin.role_user')}
+                                                        {user.isAdmin ? 'Admin' : 'User'}
                                                     </span>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
@@ -248,7 +247,7 @@ export default function AdminPage() {
                                                         {user.apiCalls} / 20
                                                     </div>
                                                     {user.apiCalls > 20 && (
-                                                        <div className="text-xs text-red-500">{getMessage('admin.over_limit')}</div>
+                                                        <div className="text-xs text-red-500">Over limit</div>
                                                     )}
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -261,20 +260,20 @@ export default function AdminPage() {
                                                             onClick={() => resetUserApiCalls(user.id)}
                                                             className="text-indigo-600 hover:text-indigo-900"
                                                         >
-                                                            {getMessage('admin.reset_button')}
+                                                            Reset API Calls
                                                         </button>
                                                     )}
 
-                                                    {/* NEW Delete button */}
+                                                    {/* ✅ NEW Delete button */}
                                                     <button
                                                         onClick={() => {
-                                                            if (confirm(getMessage('admin.delete_confirm', { email: user.email }))) {
+                                                            if (confirm(`Delete user ${user.email}? This cannot be undone.`)) {
                                                                 deleteUser(user.id);
                                                             }
                                                         }}
                                                         className="text-red-600 hover:text-red-900"
                                                     >
-                                                        {getMessage('admin.delete_button')}
+                                                        Delete
                                                     </button>
                                                 </td>
 

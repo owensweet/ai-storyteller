@@ -3,7 +3,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { getMessage } from '@/utils/messages';
 
 interface User {
     id: number;
@@ -21,35 +20,35 @@ interface StorySegment {
 
 // Genre options
 const GENRES = [
-    { id: 'action', label: getMessage('genres.action'), prompt: getMessage('genres.action_prompt') },
-    { id: 'adventure', label: getMessage('genres.adventure'), prompt: getMessage('genres.adventure_prompt') },
-    { id: 'slice-of-life', label: getMessage('genres.slice_of_life'), prompt: getMessage('genres.slice_of_life_prompt') },
-    { id: 'thriller', label: getMessage('genres.thriller'), prompt: getMessage('genres.thriller_prompt') },
-    { id: 'mystery', label: getMessage('genres.mystery'), prompt: getMessage('genres.mystery_prompt') },
-    { id: 'romance', label: getMessage('genres.romance'), prompt: getMessage('genres.romance_prompt') },
-    { id: 'horror', label: getMessage('genres.horror'), prompt: getMessage('genres.horror_prompt') },
+    { id: 'action', label: 'Action', prompt: 'with intense action sequences and thrilling battles' },
+    { id: 'adventure', label: 'Adventure', prompt: 'featuring exciting adventures and exploration' },
+    { id: 'slice-of-life', label: 'Slice of Life', prompt: 'depicting everyday life and relatable experiences' },
+    { id: 'thriller', label: 'Thriller', prompt: 'with suspenseful and tension-filled moments' },
+    { id: 'mystery', label: 'Mystery', prompt: 'containing intriguing mysteries and puzzles to solve' },
+    { id: 'romance', label: 'Romance', prompt: 'with heartfelt romantic relationships and emotions' },
+    { id: 'horror', label: 'Horror', prompt: 'featuring scary and unsettling elements' },
 ];
 
 // Location settings
 const LOCATIONS = [
-    { id: 'fantasy', label: getMessage('locations.fantasy'), prompt: getMessage('locations.fantasy_prompt') },
-    { id: 'sci-fi', label: getMessage('locations.sci_fi'), prompt: getMessage('locations.sci_fi_prompt') },
-    { id: 'realistic', label: getMessage('locations.realistic'), prompt: getMessage('locations.realistic_prompt') },
-    { id: 'alternate-history', label: getMessage('locations.alternate_history'), prompt: getMessage('locations.alternate_history_prompt') },
+    { id: 'fantasy', label: 'Fantasy', prompt: 'Set in a magical fantasy world with mythical creatures and ancient powers' },
+    { id: 'sci-fi', label: 'Sci-Fi', prompt: 'Set in a futuristic science fiction world with advanced technology and space travel' },
+    { id: 'realistic', label: 'Realistic', prompt: 'Set in a contemporary realistic world similar to our own' },
+    { id: 'alternate-history', label: 'Alternate History', prompt: 'Set in an alternate history timeline where key events unfolded differently' },
 ];
 
 // Action buttons for story continuation
 const ACTION_BUTTONS = [
-    { id: 'more-action', label: getMessage('actions.more_action'), prompt: getMessage('actions.more_action_prompt') },
-    { id: 'more-intrigue', label: getMessage('actions.more_intrigue'), prompt: getMessage('actions.more_intrigue_prompt') },
-    { id: 'more-comedy', label: getMessage('actions.more_comedy'), prompt: getMessage('actions.more_comedy_prompt') },
-    { id: 'more-drama', label: getMessage('actions.more_drama'), prompt: getMessage('actions.more_drama_prompt') },
-    { id: 'more-emotion', label: getMessage('actions.more_emotion'), prompt: getMessage('actions.more_emotion_prompt') },
-    { id: 'plot-twist', label: getMessage('actions.plot_twist'), prompt: getMessage('actions.plot_twist_prompt') },
-    { id: 'character-focus', label: getMessage('actions.character_focus'), prompt: getMessage('actions.character_focus_prompt') },
-    { id: 'world-building', label: getMessage('actions.world_building'), prompt: getMessage('actions.world_building_prompt') },
-    { id: 'faster-pace', label: getMessage('actions.faster_pace'), prompt: getMessage('actions.faster_pace_prompt') },
-    { id: 'slower-pace', label: getMessage('actions.slower_pace'), prompt: getMessage('actions.slower_pace_prompt') },
+    { id: 'more-action', label: 'More Action', prompt: 'Add more action and excitement to the story' },
+    { id: 'more-intrigue', label: 'More Intrigue', prompt: 'Increase the intrigue and mystery' },
+    { id: 'more-comedy', label: 'More Comedy', prompt: 'Add humorous and comedic elements' },
+    { id: 'more-drama', label: 'More Drama', prompt: 'Heighten the dramatic tension' },
+    { id: 'more-emotion', label: 'More Emotion', prompt: 'Deepen the emotional connections' },
+    { id: 'plot-twist', label: 'Plot Twist', prompt: 'Introduce an unexpected plot twist' },
+    { id: 'character-focus', label: 'Character Focus', prompt: 'Focus more on character development' },
+    { id: 'world-building', label: 'World Building', prompt: 'Expand on the world and setting' },
+    { id: 'faster-pace', label: 'Faster Pace', prompt: 'Speed up the pacing of the story' },
+    { id: 'slower-pace', label: 'Slower Pace', prompt: 'Slow down and add more detail' },
 ];
 
 export default function DashboardPage() {
@@ -101,7 +100,7 @@ export default function DashboardPage() {
             }
 
             console.log('[FRONTEND DEBUG] Making profile request with token');
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://ai-storyteller-production.up.railway.app'}/api/users/profile`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://ai-storyteller-production.up.railway.app'}/api/v1/users/profile`, {
                 credentials: 'include',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -124,7 +123,7 @@ export default function DashboardPage() {
                 router.push('/auth/login');
             }
         } catch (err) {
-            setError(getMessage('errors.failed_load_profile'));
+            setError('Failed to load user profile');
         } finally {
             setLoading(false);
         }
@@ -132,7 +131,7 @@ export default function DashboardPage() {
 
     const handleLogout = async () => {
         try {
-            await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://ai-storyteller-production.up.railway.app'}/api/auth/logout`, {
+            await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://ai-storyteller-production.up.railway.app'}/api/v1/auth/logout`, {
                 method: 'POST',
                 credentials: 'include',
             });
@@ -234,7 +233,7 @@ export default function DashboardPage() {
 
         try {
             const response = await fetch(
-                `${process.env.NEXT_PUBLIC_API_URL || 'https://ai-storyteller-production.up.railway.app'}/api/llm`,
+                `${process.env.NEXT_PUBLIC_API_URL || 'https://ai-storyteller-production.up.railway.app'}/api/v1/llm`,
                 {
                     method: 'POST',
                     headers: {
@@ -310,16 +309,13 @@ export default function DashboardPage() {
 
                 // Generate new random actions for next continuation
                 setRandomActions(getRandomActions());
-            } else {
-                console.warn('No content received from LLM');
-                setGenerationError(getMessage('errors.no_content_received'));
             }
 
         } catch (err: any) {
             clearTimeout(timeout);
             if (err.name !== 'AbortError') {
                 console.error('Story generation error:', err);
-                setGenerationError(err.message || getMessage('errors.story_generation_failed'));
+                setGenerationError(err.message || 'Failed to generate story');
             }
         } finally {
             setIsGenerating(false);
@@ -329,7 +325,7 @@ export default function DashboardPage() {
     // Handle initial submit
     const handleSubmit = () => {
         if (selectedGenres.length === 0 || !selectedLocation) {
-            setGenerationError(getMessage('errors.select_genre_location'));
+            setGenerationError('Please select at least 1 genre and 1 location setting');
             return;
         }
 
@@ -362,7 +358,7 @@ export default function DashboardPage() {
     if (loading) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-gray-50">
-                <div className="text-lg">{getMessage('dashboard.loading')}</div>
+                <div className="text-lg">Loading...</div>
             </div>
         );
     }
@@ -370,7 +366,7 @@ export default function DashboardPage() {
     if (error || !user) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-gray-50">
-                <div className="text-red-600">{error || getMessage('errors.failed_load_dashboard')}</div>
+                <div className="text-red-600">{error || 'Failed to load dashboard'}</div>
             </div>
         );
     }
@@ -386,14 +382,14 @@ export default function DashboardPage() {
                     <div className="flex justify-between h-16">
 
                         <div className="flex items-center">
-                            <h1 className="text-2xl font-bold text-gray-900">{getMessage('dashboard.title')}</h1>
+                            <h1 className="text-2xl font-bold text-gray-900">AI Story Generator</h1>
                         </div>
 
                         <div className="flex items-center space-x-4">
 
                             <div className="text-sm text-gray-600">
                                 <span className="font-medium">{user.email}</span>
-                                <span className="ml-2">{getMessage('dashboard.api_calls')}: {user.apiCalls}/20</span>
+                                <span className="ml-2">API Calls: {user.apiCalls}/20</span>
                             </div>
 
                             {user.isAdmin && (
@@ -401,7 +397,7 @@ export default function DashboardPage() {
                                     href="/admin"
                                     className="px-3 py-1 text-sm bg-indigo-100 text-indigo-700 rounded hover:bg-indigo-200"
                                 >
-                                    {getMessage('dashboard.admin')}
+                                    Admin
                                 </Link>
                             )}
 
@@ -409,7 +405,7 @@ export default function DashboardPage() {
                                 onClick={handleLogout}
                                 className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700 transition"
                             >
-                                {getMessage('dashboard.logout')}
+                                Logout
                             </button>
 
                         </div>
@@ -422,14 +418,14 @@ export default function DashboardPage() {
                 {/* Instructions */}
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
                     <p className="text-sm text-blue-800">
-                        <strong>Instructions:</strong> {getMessage('dashboard.instructions')}
+                        <strong>Instructions:</strong> Please select up to 3 genres and 1 location setting to generate your story.
                     </p>
                 </div>
 
                 {/* Genre Selection */}
                 <div className="bg-white rounded-lg shadow p-6 mb-6">
                     <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                        {getMessage('dashboard.select_genres')} <span className="text-sm font-normal text-gray-600">{getMessage('dashboard.choose_up_to_3')}</span>
+                        Select Genres <span className="text-sm font-normal text-gray-600">(Choose up to 3)</span>
                     </h2>
                     <div className="flex flex-wrap gap-3">
                         {GENRES.map(genre => {
@@ -452,7 +448,7 @@ export default function DashboardPage() {
                     </div>
                     {selectedGenres.length >= 3 && !hasSubmitted && (
                         <p className="mt-3 text-sm text-amber-600">
-                            {getMessage('dashboard.max_genres')}
+                            Maximum 3 genres selected. Deselect one to choose another.
                         </p>
                     )}
                 </div>
@@ -460,7 +456,7 @@ export default function DashboardPage() {
                 {/* Location Setting Selection */}
                 <div className="bg-white rounded-lg shadow p-6 mb-6">
                     <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                        {getMessage('dashboard.select_location')} <span className="text-sm font-normal text-gray-600">{getMessage('dashboard.choose_1')}</span>
+                        Select Location Setting <span className="text-sm font-normal text-gray-600">(Choose 1)</span>
                     </h2>
                     <div className="flex flex-wrap gap-3">
                         {LOCATIONS.map(location => {
@@ -494,7 +490,7 @@ export default function DashboardPage() {
                                 : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                                 }`}
                         >
-                            {isGenerating ? getMessage('dashboard.generating_story') : getMessage('dashboard.generate_story')}
+                            {isGenerating ? 'Generating Story...' : 'Generate Story'}
                         </button>
                     </div>
                 )}
@@ -503,7 +499,7 @@ export default function DashboardPage() {
                 {hasSubmitted && storySegments.length === 0 && isGenerating && (
                     <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
                         <p className="text-sm text-yellow-800 text-center">
-                            {getMessage('dashboard.generating_wait')}
+                            Generating your story... Please wait.
                         </p>
                     </div>
                 )}
@@ -512,7 +508,7 @@ export default function DashboardPage() {
                 {hasSubmitted && (
                     <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
                         <p className="text-sm text-amber-800 text-center">
-                            {getMessage('dashboard.edit_selections')}
+                            To edit your genre or location selections, please click "New Story" to start over.
                         </p>
                     </div>
                 )}
@@ -527,7 +523,7 @@ export default function DashboardPage() {
                             onClick={handleNewStory}
                             className="px-6 py-2 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors duration-200"
                         >
-                            {getMessage('dashboard.new_story')}
+                            New Story
                         </button>
                     </div>
                 )}
@@ -535,7 +531,7 @@ export default function DashboardPage() {
                 {/* Story Segments Display */}
                 {storySegments.length > 0 && (
                     <div className="space-y-4 mb-6">
-                        <h2 className="text-xl font-bold text-gray-900">{getMessage('dashboard.your_story')}</h2>
+                        <h2 className="text-xl font-bold text-gray-900">Your Story</h2>
                         {storySegments.map((segment, index) => (
 
                             <div
@@ -544,7 +540,7 @@ export default function DashboardPage() {
                             >
                                 <div className="flex justify-between items-start mb-2">
                                     <span className="text-sm font-semibold text-blue-600">
-                                        {getMessage('dashboard.segment')} {index + 1}
+                                        Segment {index + 1}
                                     </span>
                                     <span className="text-xs text-gray-500">
                                         {segment.timestamp.toLocaleTimeString()}
@@ -563,7 +559,7 @@ export default function DashboardPage() {
                 {/* Action Buttons (shown after first story generation) */}
                 {storySegments.length > 0 && !isGenerating && (
                     <div className="bg-white rounded-lg shadow p-6">
-                        <h3 className="text-lg font-semibold text-gray-900 mb-4">{getMessage('dashboard.continue_story')}</h3>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-4">Continue Your Story</h3>
 
                         {/* Random Action Buttons */}
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
@@ -586,14 +582,14 @@ export default function DashboardPage() {
                                 onClick={handleSaveStory}
                                 className="px-6 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors duration-200"
                             >
-                                {getMessage('dashboard.save_story')}
+                                Save Story
                             </button>
 
                             <button
                                 onClick={handleNewStory}
                                 className="px-6 py-3 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors duration-200"
                             >
-                                {getMessage('dashboard.new_story')}
+                                New Story
                             </button>
 
                         </div>
@@ -604,7 +600,7 @@ export default function DashboardPage() {
                 {isGenerating && storySegments.length > 0 && (
                     <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4">
                         <p className="text-sm text-blue-800 text-center animate-pulse">
-                            {getMessage('dashboard.generating_next')}
+                            Generating next part of your story...
                         </p>
                     </div>
                 )}

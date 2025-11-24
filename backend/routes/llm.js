@@ -3,7 +3,6 @@ const { body, validationResult } = require('express-validator');
 const rateLimit = require('express-rate-limit');
 const { auth } = require('../middleware/auth');
 const apiUsage = require('../middleware/apiUsage');
-const { getMessage } = require('../utils/messages');
 
 const router = express.Router();
 
@@ -11,7 +10,7 @@ const router = express.Router();
 const llmLimiter = rateLimit({
     windowMs: 60 * 1000, // 1 minute
     max: 10, // limit each IP to 10 LLM requests per minute
-    message: { error: getMessage('errors.rate_limit') },
+    message: { error: 'Too many LLM requests, please try again later.' },
     standardHeaders: true,
     legacyHeaders: false,
 });
@@ -33,14 +32,14 @@ function handleValidationErrors(req, res, next) {
 
         return res.status(400).json({
 
-            error: getMessage('errors.validation_failed'),
+            error: 'Validation failed',
             details: errors.array()
         });
     }
     next();
 }
 
-// POST /api/llm - Main LLM endpoint
+// POST /api/v1/llm - Main LLM endpoint
 router.post('/',
     llmLimiter,
     validateLLMRequest,
@@ -51,7 +50,7 @@ router.post('/',
         const LLM_BASE = process.env.LLM_BASE_URL;
 
         if (!LLM_BASE) {
-            return res.status(500).json({ error: getMessage('errors.llm_not_configured') });
+            return res.status(500).json({ error: 'LLM_BASE_URL is not configured' });
         }
 
         // Always force streaming at the model layer
@@ -78,7 +77,7 @@ router.post('/',
             upstream = response;
         } catch (error) {
             clearTimeout(timeout);
-            const message = error?.name === "AbortError" ? getMessage('errors.upstream_timeout') : error?.message || getMessage('errors.upstream_fetch_failed');
+            const message = error?.name === "AbortError" ? "Upstream timeout" : error?.message || "Upstream fetch failed";
             return res.status(502).json({ error: message });
         } finally {
             clearTimeout(timeout);
