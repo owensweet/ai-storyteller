@@ -34,21 +34,22 @@ const router = express.Router();
 // GET /api/admin/users - Get all users (admin only)
 // GET /api/v1/admin/users - Get all users (admin only)
 router.get('/users', adminAuth, async (req, res) => {
-
     try {
-
         const users = await User.getAllUsers();
 
-        res.json({
-
-            users: users.map(user => ({
-
-                id: user._id,
+        // Map through users and await each getApiCalls()
+        const usersWithApiCalls = await Promise.all(
+            users.map(async (user) => ({
+                id: user.id || user._id,
                 email: user.email,
                 isAdmin: user.is_admin,
-                apiCalls: user.api_calls || 0,
-                createdAt: user.createdAt
+                apiCalls: await user.getApiCalls(),
+                createdAt: user.createdAt || user.created_at
             }))
+        );
+
+        res.json({
+            users: usersWithApiCalls
         });
 
     } catch (error) {
@@ -56,7 +57,6 @@ router.get('/users', adminAuth, async (req, res) => {
         res.status(500).json({ error: 'Failed to get users' });
     }
 });
-
 /**
  * @swagger
  * /api/v1/admin/users/{userId}/reset-api-calls:
