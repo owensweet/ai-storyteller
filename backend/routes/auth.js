@@ -51,7 +51,7 @@ router.post('/register', registerValidation, async (req, res) => {
         }
 
         // Create new user
-        const user = await User.create(email, password);
+        const user = await User.createUser(email, password);
 
         // Generate token
         const token = generateToken(user.id);
