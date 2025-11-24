@@ -66,7 +66,7 @@ export default function AdminPage() {
     const resetUserApiCalls = async (userId: number) => {
         try {
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://ai-storyteller-production.up.railway.app'}/api/admin/users/${userId}/reset-api-calls`, {
-                method: 'POST',
+                method: 'PATCH',
                 credentials: 'include',
             });
 

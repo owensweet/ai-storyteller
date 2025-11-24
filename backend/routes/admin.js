@@ -30,7 +30,7 @@ router.get('/users', adminAuth, async (req, res) => {
 });
 
 // POST /api/admin/users/:userId/reset-api-calls - Reset user's API calls
-router.post('/users/:userId/reset-api-calls', adminAuth, async (req, res) => {
+router.patch('/users/:userId/reset-api-calls', adminAuth, async (req, res) => {
 
     try {
         
