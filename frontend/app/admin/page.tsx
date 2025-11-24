@@ -131,7 +131,7 @@ export default function AdminPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-purple-50">
             <nav className="bg-white shadow">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
@@ -224,7 +224,10 @@ export default function AdminPage() {
                                                 {getMessage('admin.created_column')}
                                             </th>
                                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                {getMessage('admin.actions_column')}
+                                                {getMessage('admin.reset_column')}
+                                            </th>
+                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                {getMessage('admin.delete_column')}
                                             </th>
                                         </tr>
                                     </thead>
@@ -254,8 +257,7 @@ export default function AdminPage() {
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                     {new Date(user.createdAt).toLocaleDateString()}
                                                 </td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium flex gap-4 justify-end">
-                                                    {/* Reset button */}
+                                               <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                     {user.apiCalls > 0 && (
                                                         <button
                                                             onClick={() => resetUserApiCalls(user.id)}
@@ -264,8 +266,8 @@ export default function AdminPage() {
                                                             {getMessage('admin.reset_button')}
                                                         </button>
                                                     )}
-
-                                                    {/* Delete button */}
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                     <button
                                                         onClick={() => {
                                                             if (confirm(getMessage('admin.delete_confirm', { email: user.email }))) {
@@ -277,7 +279,6 @@ export default function AdminPage() {
                                                         {getMessage('admin.delete_button')}
                                                     </button>
                                                 </td>
-
                                             </tr>
                                         ))}
                                     </tbody>

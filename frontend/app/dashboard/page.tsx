@@ -371,7 +371,7 @@ export default function DashboardPage() {
 
     if (loading) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gray-50">
+            <div className="min-h-screen bg-purple-50">
                 <div className="text-lg">{getMessage('dashboard.loading')}</div>
             </div>
         );
@@ -389,19 +389,19 @@ export default function DashboardPage() {
     const canSubmit = selectedGenres.length > 0 && selectedLocation && !hasSubmitted && !isGenerating;
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-violet-50 via-white to-purple-50">
+        <div className="min-h-screen bg-purple-50">
             {/* Navigation */}
-            <nav className="bg-white/80 backdrop-blur-sm shadow-md border-b border-violet-100">
+            <nav className="bg-purple-700 shadow">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
 
                         <div className="flex items-center">
-                            <h1 className="text-2xl font-bold text-gray-900">{getMessage('dashboard.title')}</h1>
+                            <h1 className="text-2xl font-bold text-white">{getMessage('dashboard.title')}</h1>
                         </div>
 
                         <div className="flex items-center space-x-4">
 
-                            <div className="text-sm text-gray-600">
+                            <div className="text-sm text-purple-100">
                                 <span className="font-medium">{user.email}</span>
                                 <span className="ml-2">{getMessage('dashboard.api_calls')}: {user.apiCalls}/20</span>
                             </div>
@@ -409,7 +409,7 @@ export default function DashboardPage() {
                             {user.isAdmin && (
                                 <Link
                                     href="/admin"
-                                    className="px-4 py-2 text-sm font-medium bg-violet-100 text-violet-700 rounded-lg hover:bg-violet-200 transition-colors"
+                                    className="px-4 py-2 text-sm font-medium bg-purple-100 text-purple-800 rounded-lg hover:bg-purple-200 transition-colors"
                                 >
                                     {getMessage('dashboard.admin')}
                                 </Link>
@@ -417,7 +417,7 @@ export default function DashboardPage() {
 
                             <button
                                 onClick={handleLogout}
-                                className="bg-gradient-to-r from-slate-600 to-slate-700 text-white px-4 py-2 rounded-lg hover:from-slate-700 hover:to-slate-800 transition-all shadow-sm hover:shadow"
+                                className="bg-purple-800 text-white px-4 py-2 rounded-lg hover:bg-purple-900 transition-all shadow-sm hover:shadow"
                             >
                                 {getMessage('dashboard.logout')}
                             </button>
